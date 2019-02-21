@@ -1,3 +1,4 @@
+import math
 import timeit
 from decimal import Decimal, getcontext
 
@@ -9,7 +10,7 @@ def pi(precision, verbose=False):
         """
         polygon_edge_length_squared = Decimal(2)
         polygon_sides = 2
-        for i in range(n):
+        for k in range(n):
             polygon_edge_length_squared = 2 - 2 * (1 - polygon_edge_length_squared / 4).sqrt()
             polygon_sides *= 2
         return polygon_sides * polygon_edge_length_squared.sqrt()
@@ -27,6 +28,26 @@ def pi(precision, verbose=False):
         if result == old_result:
             break
         old_result = result
+
+
+def factorial(n):
+    return math.factorial(n)
+
+
+def find_primes(n):
+    # Initialize a list
+    primes = []
+    for possiblePrime in range(2, n + 1):
+        # Assume number is prime until shown it is not.
+        is_prime = True
+        for num in range(2, int(possiblePrime ** 0.5) + 1):
+            if possiblePrime % num == 0:
+                is_prime = False
+                break
+        if is_prime:
+            primes.append(possiblePrime)
+
+    return primes
 
 
 def main():
