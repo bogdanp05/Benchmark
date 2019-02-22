@@ -2,14 +2,15 @@ import timeit
 
 from flask import Flask
 
-from benchmark import cpu, memory
+from benchmark import probe
+from benchmark.loads import cpu, memory
 
 app = Flask(__name__)
 
 
-@app.route('/endpoint')
-def endpoint3():
-    return 'Ok'
+@app.route('/')
+def root():
+    return 'Server is running'
 
 
 @app.route('/pi/<int:precision>')
@@ -47,3 +48,14 @@ def powerset(n):
     print("Finding power set of %d elements took %f seconds" % (n, t_now - t0))
     return 'OK'
 
+
+@app.route('/start_probe/<float:sampling_rate>')
+def start_probe(sampling_rate):
+    probe.start_probe(sampling_rate)
+    return 'OK'
+
+
+@app.route('/stop_probe/')
+def stop_probe():
+    probe.stop_probe()
+    return 'OK'
