@@ -1,1 +1,4 @@
 flask>=0.9            # for monitoring the web-service
+psutil                # for getting system info
+sqlalchemy>=1.1.9     # for database support
+requests              # for sending HTTP requests
