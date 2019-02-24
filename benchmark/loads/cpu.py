@@ -1,5 +1,4 @@
 import math
-import timeit
 from decimal import Decimal, getcontext
 
 
@@ -48,15 +47,3 @@ def find_primes(n):
             primes.append(possiblePrime)
 
     return primes
-
-
-def main():
-    t0 = timeit.default_timer()
-    t_previous = t0
-    pi(200)
-    t_now = timeit.default_timer()
-    print("Calculating pi took %f seconds" % (t_now - t_previous))
-
-
-if __name__ == "__main__":
-    main()

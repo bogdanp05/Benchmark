@@ -1,6 +1,6 @@
 import timeit
 
-from flask import Flask
+from flask import Flask, jsonify
 
 from benchmark import probe
 from benchmark.loads import cpu, memory
@@ -45,8 +45,10 @@ def powerset(n):
     t0 = timeit.default_timer()
     memory.powerset(n)
     t_now = timeit.default_timer()
-    print("Finding power set of %d elements took %f seconds" % (n, t_now - t0))
-    return 'OK'
+    response_time = t_now - t0
+    print("Finding power set of %d elements took %f seconds" % (n, response_time))
+    response = {'response_time': response_time}
+    return jsonify(response)
 
 
 @app.route('/start_probe/<float:sampling_rate>')

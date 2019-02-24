@@ -17,6 +17,8 @@ def start_probe(sampling_rate):
         print("Probe is already running")
         return
 
+    # create_log()
+
     thread = MeasureThread(sampling_rate)
     thread.start()
 

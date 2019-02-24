@@ -1,3 +1,4 @@
+import psutil
 import threading
 import time
 
@@ -23,7 +24,11 @@ class MeasureThread(threading.Thread):
         while self._keep_running:
             current_time = time.time()
 
-            print(current_time)
+            print(psutil.cpu_percent(interval=None, percpu=True))
+            print(psutil.virtual_memory())
+            print(psutil.swap_memory())
+            print(psutil.disk_io_counters())
+            print("\n")
 
             elapsed = time.time() - current_time
             if self._sampling_rate > elapsed:
