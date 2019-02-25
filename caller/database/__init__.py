@@ -22,7 +22,7 @@ class Run(Base):
     """ Table storing the response time of endpoints. """
     __tablename__ = 'Run'
     id = Column(Integer, primary_key=True)
-    endpoint_name = Column(String(250), unique=True, nullable=False)
+    endpoint_name = Column(String(250), nullable=False)
     parameter = Column(Float, nullable=False)
     response_time = Column(Float, nullable=False)
     # -1 no FMD, 0-3 correspond to FMD monitor levels
@@ -30,6 +30,8 @@ class Run(Base):
     # TODO: get this value somehow
     fmd_version = Column(String(100))
     timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+
+# TODO: add a TestGroup table
 
 
 # define the database
