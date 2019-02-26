@@ -1,15 +1,13 @@
-# import matplotlib.pyplot as plt
-# plt.plot([1, 2, 3, 4])
-# plt.ylabel('some numbers')
-# plt.show()
-
-from caller.database.run import get_runs
 from collections import defaultdict
 
+import plotly.graph_objs as go
+from plotly.offline import plot
+
+from caller.database.run import get_runs
 
 runs = get_runs("powerset")
 
-loads = range(15, 23)
+loads = range(10, 15)
 
 """
 {
@@ -26,36 +24,28 @@ for r in runs:
     graph[level][load].append(resp_time)
 
 
-# for level in graph.keys():
-#     # x_values = graph[level].keys()
-#     x_values = [22, 23]
-#     y_values = []
-#     for x in x_values:
-#         y = sum(graph[level][x])/len(graph[level][x])
-#         y_values.append(y)
-#     plt.plot(x_values, y_values)
-
-from plotly.offline import plot
-import plotly.graph_objs as go
-
-# Create random data with numpy
-import numpy as np
-
-N = 500
-random_x = np.linspace(0, 1, N)
-random_y = np.random.randn(N)
-
-# Create a trace
 data = []
 for level in graph.keys():
-    # x_values = graph[level].keys()
-    x_values = [22, 23]
+    x_values = list(graph[level].keys())[:4]
     y_values = []
     for x in x_values:
         y = sum(graph[level][x])/len(graph[level][x])
         y_values.append(y)
-    data.append(go.Scatter(x=x_values, y=y_values))
+    data.append(go.Scatter(x=x_values,
+                           y=y_values,
+                           mode='lines+markers',
+                           name='FMD level ' + str(level)))
 
-plot(data)
+layout = go.Layout(
+    title='Average response times of the "powerset" endpoint with different FMD monitoring levels',
+    xaxis=dict(
+        title="load"
+    ),
+    yaxis=dict(
+        title="response time (s)"
+        # type='log'
+    )
+)
 
-
+fig = go.Figure(data=data, layout=layout)
+plot(fig)

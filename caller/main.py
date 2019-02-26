@@ -37,7 +37,7 @@ def main():
     set_flask_environment()
     for level in range(-1, 4):
         start_benchmark_app(level)
-        for load in range(15, 24):
+        for load in range(10, 15):
             r = requests.get(APP_PATH + 'powerset/' + str(load))
             print(r.json())
             add_run('powerset', load, r.json()['response_time'], level)

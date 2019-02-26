@@ -17,7 +17,12 @@ the response time and system probe parameters in a database.
 
 
 ## How to run
-In the root of the project just run:
+To run the tests, go in the root of the project and run:
 ```
 python -m caller.main
+```
+
+To generate the plots, go in the root of the project and run:
+```
+python caller/plot/generate.py
 ```
