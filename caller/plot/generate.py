@@ -26,7 +26,7 @@ for r in runs:
 
 data = []
 for level in graph.keys():
-    x_values = list(graph[level].keys())[:4]
+    x_values = sorted(list(graph[level].keys()))[:5]
     y_values = []
     for x in x_values:
         y = sum(graph[level][x])/len(graph[level][x])
@@ -37,7 +37,7 @@ for level in graph.keys():
                            name='FMD level ' + str(level)))
 
 layout = go.Layout(
-    title='Average response times of the "powerset" endpoint with different FMD monitoring levels',
+    title='Average response times of the "powerset" endpoint for different FMD monitoring levels',
     xaxis=dict(
         title="load"
     ),
