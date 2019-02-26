@@ -17,5 +17,7 @@ the response time and system probe parameters in a database.
 
 
 ## How to run
-Start the **benchmark** application and then run `main.py` from the **caller**
-application. 
+In the root of the project just run:
+```
+python -m caller.main
+```

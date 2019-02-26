@@ -10,9 +10,10 @@ from contextlib import contextmanager
 from sqlalchemy import Column, Integer, String, DateTime, create_engine, Float, exc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
+from caller import LOCATION
 
 # TODO: change to user configurable
-DB_NAME = 'sqlite:///../benchmark_data.db'
+DB_NAME = 'sqlite:///' + LOCATION + '../benchmark_data.db'
 
 
 Base = declarative_base()
