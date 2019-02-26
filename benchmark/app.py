@@ -1,11 +1,20 @@
+import datetime
 import timeit
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
-from benchmark import probe
+from benchmark import probe, FMD_LEVEL, LOCATION
 from benchmark.loads import cpu, memory
 
 app = Flask(__name__)
+
+if FMD_LEVEL > -1:
+    print("FMD level: %d" % FMD_LEVEL)
+    import flask_monitoringdashboard as dashboard
+    # TODO: make this configurable
+    dashboard.config.database_name = 'sqlite:///' + LOCATION + '../fmd' + str(FMD_LEVEL) + '.db'
+    dashboard.config.monitor_level = FMD_LEVEL
+    dashboard.bind(app)
 
 
 @app.route('/')
@@ -46,7 +55,8 @@ def powerset(n):
     memory.powerset(n)
     t_now = timeit.default_timer()
     response_time = t_now - t0
-    print("Finding power set of %d elements took %f seconds" % (n, response_time))
+    print("%s: Finding power set of %d elements took %f seconds" %
+          (datetime.datetime.utcnow(), n, response_time))
     response = {'response_time': response_time}
     return jsonify(response)
 
@@ -61,3 +71,16 @@ def start_probe(sampling_rate):
 def stop_probe():
     probe.stop_probe()
     return 'OK'
+
+
+def shutdown_server():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
+
+
+@app.route('/shutdown', methods=['POST'])
+def shutdown():
+    shutdown_server()
+    return 'Server shutting down...'

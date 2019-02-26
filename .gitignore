@@ -108,3 +108,6 @@ venv.bak/
 
 # database
 *.db
+
+#charts
+*.html
