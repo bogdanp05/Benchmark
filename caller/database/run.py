@@ -17,3 +17,13 @@ def add_run(endpoint_name, parameter, response_time, fmd_level):
         db_session.add(run)
         db_session.flush()
         return run.id
+
+
+def get_runs(endpoint_name):
+    """
+    Returns all Run objects from the database for the given endpoint name.
+    :param endpoint_name: name of the endpoint for which the runs are collected
+    :return list of Run objects
+    """
+    with session_scope() as db_session:
+        return db_session.query(Run).filter(Run.endpoint_name == endpoint_name)

@@ -13,7 +13,7 @@ PORT = '5000'
 APP_PATH = BASE_URL + PORT + '/'
 USERNAME = 'admin'
 PASSWORD = 'admin'
-WARM_UP = 4  # sets the number of seconds to wait after starting the server
+WARM_UP = 5  # sets the number of seconds to wait after starting the server
 APP_OUTPUT = LOCATION + '../output.log'
 
 

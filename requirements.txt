@@ -3,3 +3,5 @@ psutil                              # for getting system info
 sqlalchemy>=1.1.9                   # for database support
 requests                            # for sending HTTP requests
 flask_monitoringdashboard>=2.1.0    # FMD
+matplotlib                          # for building nice plots
+plotly                              # for building nice plots
