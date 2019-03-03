@@ -17,6 +17,16 @@ the response time and system probe parameters in a database.
 
 
 ## How to run
+Install a virtual environment with `virtualenv`:
+```
+virtualenv --python=python3.7 ENV
+```
+Activate it:
+```
+source ENV/bin/activate
+```
+Go in the root of the project and install the requirements:
+
 To run the tests, go in the root of the project and run:
 ```
 python -m caller.main
