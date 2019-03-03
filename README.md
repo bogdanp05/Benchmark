@@ -34,5 +34,5 @@ python -m caller.main
 
 To generate the plots, go in the root of the project and run:
 ```
-python caller/plot/generate.py
+python -m caller.plot.generate
 ```
