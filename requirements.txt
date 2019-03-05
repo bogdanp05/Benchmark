@@ -4,3 +4,5 @@ sqlalchemy==1.2.18                    # for database support
 requests==2.21.0                      # for sending HTTP requests
 flask_monitoringdashboard==2.1.1      # FMD
 plotly==3.6.1                         # for building nice plots
+performance==0.7.0                    # for getting the benchmarks
+perf==1.6.0                           # benchmarking toolkit

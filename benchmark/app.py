@@ -73,6 +73,18 @@ def stop_probe():
     return 'OK'
 
 
+@app.route('/pidigits/')
+def pidigits():
+    t0 = timeit.default_timer()
+    cpu.pidigits()
+    t_now = timeit.default_timer()
+    response_time = t_now - t0
+    print("%s: Finding 2000 digits of pi took %f seconds" %
+          (datetime.datetime.utcnow(), response_time))
+    response = {'response_time': response_time}
+    return jsonify(response)
+
+
 def shutdown_server():
     func = request.environ.get('werkzeug.server.shutdown')
     if func is None:

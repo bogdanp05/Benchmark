@@ -26,8 +26,11 @@ Activate it:
 source ENV/bin/activate
 ```
 Go in the root of the project and install the requirements:
+```
+pip install -r requirements.txt
+```
 
-To run the tests, go in the root of the project and run:
+To run the benchmarks, go in the root of the project and run:
 ```
 python -m caller.main
 ```
@@ -36,3 +39,15 @@ To generate the plots, go in the root of the project and run:
 ```
 python -m caller.plot.generate
 ```
+
+## Clean up
+To remove all the db's created by FMD, run:
+```
+make clear
+```
+If there's a failure, the server will not shutdown and port 5000 is unusable.
+To shut down the server, run:
+```
+make shutdown
+```
+
