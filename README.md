@@ -35,10 +35,19 @@ To run the benchmarks, go in the root of the project and run:
 python -m caller.main
 ```
 
+<!---
 To generate the plots, go in the root of the project and run:
 ```
 python -m caller.plot.generate
 ```
+-->
+
+The results are saved into json files, in the `/results` folder
+To compare results, from the root run:
+```
+python -m perf compare_to results/190305_12:35:44_-1.json results/190305_12:35:44_3.json --table
+```
+
 
 ## Clean up
 To remove all the db's created by FMD, run:

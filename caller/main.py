@@ -1,13 +1,12 @@
+import datetime
 import os
 import subprocess
 import time
 
 import perf
 import requests
-
-from performance.utils import temporary_file
 from performance.run import run_command
-
+from performance.utils import temporary_file
 
 BASE_URL = 'http://127.0.0.1:'
 PORT = '5000'
@@ -18,6 +17,7 @@ WARM_UP = 3  # sets the number of seconds to wait after starting the server
 LOCATION = os.path.abspath(os.path.dirname(__file__)) + '/'
 APP_OUTPUT = LOCATION + '../output.log'
 runner = perf.Runner()
+START_TIME = datetime.datetime.now()
 
 
 def set_flask_environment():
@@ -42,7 +42,7 @@ def stop_app():
 
 
 def run_perf_script():
-    bm_path = './run_benchmarks.py'
+    bm_path = LOCATION + 'run_benchmarks.py'
     cmd = list(["python"])
     cmd.append('-u')
     cmd.append(bm_path)
@@ -54,11 +54,18 @@ def run_perf_script():
         return perf.BenchmarkSuite.load(tmp)
 
 
+def get_file_name(monitor_level):
+    start_time = START_TIME.strftime("%y%m%d_%H:%M:%S")
+    filename = LOCATION + '../results/' + start_time + '_' + str(monitor_level) + '.json'
+    return filename
+
+
 def main():
     set_flask_environment()
     for level in range(-1, 4):
         start_app(level)
-        run_perf_script()
+        suite = run_perf_script()
+        suite.dump(get_file_name(level))
         stop_app()
 
 
