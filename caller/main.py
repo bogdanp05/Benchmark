@@ -11,13 +11,11 @@ from performance.utils import temporary_file
 BASE_URL = 'http://127.0.0.1:'
 PORT = '5000'
 APP_PATH = BASE_URL + PORT + '/'
-USERNAME = 'admin'
-PASSWORD = 'admin'
 WARM_UP = 3  # sets the number of seconds to wait after starting the server
 LOCATION = os.path.abspath(os.path.dirname(__file__)) + '/'
 APP_OUTPUT = LOCATION + '../output.log'
 runner = perf.Runner()
-START_TIME = datetime.datetime.now()
+START_TIME = datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")
 
 
 def set_flask_environment():
@@ -54,14 +52,18 @@ def run_perf_script():
         return perf.BenchmarkSuite.load(tmp)
 
 
+def create_results_dir():
+    os.mkdir(LOCATION + '../results/' + START_TIME)
+
+
 def get_file_name(monitor_level):
-    start_time = START_TIME.strftime("%y%m%d_%H:%M:%S")
-    filename = LOCATION + '../results/' + start_time + '_' + str(monitor_level) + '.json'
+    filename = LOCATION + '../results/' + START_TIME + '/' + str(monitor_level) + '.json'
     return filename
 
 
 def main():
     set_flask_environment()
+    create_results_dir()
     for level in range(-1, 4):
         start_app(level)
         suite = run_perf_script()

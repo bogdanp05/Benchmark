@@ -80,7 +80,7 @@ def pidigits():
     t_now = timeit.default_timer()
     response_time = t_now - t0
     print("%s: Finding 2000 digits of pi took %f seconds" %
-          (datetime.datetime.utcnow(), response_time))
+          (datetime.datetime.now(), response_time))
     response = {'response_time': response_time}
     return jsonify(response)
 
