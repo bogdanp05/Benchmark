@@ -17,6 +17,9 @@ the response time and system probe parameters in a database.
 
 
 ## How to run
+There are 3 steps you have to take:
+
+### 1. Set up the system
 Install a virtual environment with `virtualenv`:
 ```
 virtualenv --python=python3.7 ENV
@@ -29,6 +32,10 @@ Go in the root of the project and install the requirements:
 ```
 pip install -r requirements.txt
 ```
+
+**Define the hyper parameters in the `config.ini` file.**
+
+### 2. Run benchmarks
 
 To run the benchmarks, go in the root of the project and run:
 ```
@@ -48,6 +55,8 @@ To compare results, from the root run:
 python -m perf compare_to results/190305_12:35:44_-1.json results/190305_12:35:44_3.json --table
 ```
 
+### 3. Visualize results
+*Work in progress*
 
 ## Clean up
 To remove all the db's created by FMD, run:

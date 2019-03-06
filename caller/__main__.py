@@ -10,11 +10,8 @@ from performance.utils import temporary_file
 
 from caller import config, LOCATION
 
-BASE_URL = 'http://127.0.0.1:'
 
-
-PORT = str(config.port)
-APP_PATH = BASE_URL + PORT + '/'
+APP_PATH = config.protocol + '://' + config.url + ':' + config.port + '/'
 WARM_UP = 3  # sets the number of seconds to wait after starting the server
 
 APP_OUTPUT = LOCATION + '../output.log'
@@ -30,7 +27,7 @@ def set_flask_environment():
 def start_app(fmd_level):
     os.environ["FMD_LEVEL"] = str(fmd_level)
     with open(APP_OUTPUT, 'a') as f:
-        subprocess.Popen(["flask", "run", "-p", PORT], stdout=f)
+        subprocess.Popen(["flask", "run", "-p", config.port], stdout=f)
     time.sleep(WARM_UP)
 
 
