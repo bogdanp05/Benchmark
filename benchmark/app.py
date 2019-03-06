@@ -4,7 +4,8 @@ import timeit
 from flask import Flask, jsonify, request
 
 from benchmark import probe, FMD_LEVEL, LOCATION
-from benchmark.loads import cpu, memory
+from benchmark.loads import cpu
+from benchmark.loads import memory
 
 app = Flask(__name__)
 

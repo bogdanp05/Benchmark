@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 To run the benchmarks, go in the root of the project and run:
 ```
-python -m caller.main
+python -m caller
 ```
 
 <!---

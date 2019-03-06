@@ -8,11 +8,15 @@ import requests
 from performance.run import run_command
 from performance.utils import temporary_file
 
+from caller import config, LOCATION
+
 BASE_URL = 'http://127.0.0.1:'
-PORT = '5000'
+
+
+PORT = str(config.port)
 APP_PATH = BASE_URL + PORT + '/'
 WARM_UP = 3  # sets the number of seconds to wait after starting the server
-LOCATION = os.path.abspath(os.path.dirname(__file__)) + '/'
+
 APP_OUTPUT = LOCATION + '../output.log'
 runner = perf.Runner()
 START_TIME = datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")
@@ -64,7 +68,7 @@ def get_file_name(monitor_level):
 def main():
     set_flask_environment()
     create_results_dir()
-    for level in range(-1, 4):
+    for level in config.levels:
         start_app(level)
         suite = run_perf_script()
         suite.dump(get_file_name(level))
