@@ -86,6 +86,18 @@ def pidigits():
     return jsonify(response)
 
 
+@app.route('/float/')
+def float():
+    t0 = timeit.default_timer()
+    cpu.float()
+    t_now = timeit.default_timer()
+    response_time = t_now - t0
+    print("%s: Creating 100k point objects took %f seconds" %
+          (datetime.datetime.now(), response_time))
+    response = {'response_time': response_time}
+    return jsonify(response)
+
+
 def shutdown_server():
     func = request.environ.get('werkzeug.server.shutdown')
     if func is None:

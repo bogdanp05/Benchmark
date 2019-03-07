@@ -52,3 +52,9 @@ def find_primes(n):
 def pidigits():
     from performance.benchmarks import bm_pidigits
     bm_pidigits.calc_ndigits(bm_pidigits.DEFAULT_DIGITS)
+
+
+def float():
+    from performance.benchmarks import bm_float
+    bm_float.benchmark(bm_float.POINTS)
+
