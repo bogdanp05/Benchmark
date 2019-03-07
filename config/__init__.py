@@ -11,6 +11,7 @@ class Config(object):
         # benchmark
         self.values = 5
         self.processes = 20
+        self.app_warmup = 3
 
         # app
         self.levels = [-1, 0, 1, 2, 3]
@@ -25,6 +26,7 @@ class Config(object):
         # parse 'benchmark'
         self.values = parse_literal(parser, 'benchmark', 'values', self.values)
         self.processes = parse_literal(parser, 'benchmark', 'processes', self.processes)
+        self.app_warmup = parse_literal(parser, 'benchmark', 'app_warmup', self.app_warmup)
 
         # parse app
         self.levels = parse_list(parser, 'app', 'levels', self.levels)

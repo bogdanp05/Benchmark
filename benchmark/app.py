@@ -23,33 +23,6 @@ def root():
     return 'Server is running'
 
 
-@app.route('/pi/<int:precision>')
-def pi(precision):
-    t0 = timeit.default_timer()
-    cpu.pi(precision)
-    t_now = timeit.default_timer()
-    print("Calculating pi with %d digits precision took %f seconds" % (precision, t_now - t0))
-    return 'OK'
-
-
-@app.route('/factorial/<int:n>')
-def factorial(n):
-    t0 = timeit.default_timer()
-    cpu.factorial(n)
-    t_now = timeit.default_timer()
-    print("Calculating factorial of %d took %f seconds" % (n, t_now - t0))
-    return 'OK'
-
-
-@app.route('/primes/<int:n>')
-def primes(n):
-    t0 = timeit.default_timer()
-    cpu.find_primes(n)
-    t_now = timeit.default_timer()
-    print("Finding primes less than %d took %f seconds" % (n, t_now - t0))
-    return 'OK'
-
-
 @app.route('/powerset/<int:n>')
 def powerset(n):
     t0 = timeit.default_timer()
@@ -75,9 +48,9 @@ def stop_probe():
 
 
 @app.route('/pidigits/')
-def pidigits():
+def pi_digits_endpoint():
     t0 = timeit.default_timer()
-    cpu.pidigits()
+    cpu.pi_digits_bm()
     t_now = timeit.default_timer()
     response_time = t_now - t0
     print("%s: Finding 2000 digits of pi took %f seconds" %
@@ -87,12 +60,36 @@ def pidigits():
 
 
 @app.route('/float/')
-def float():
+def float_endpoint():
     t0 = timeit.default_timer()
-    cpu.float()
+    cpu.float_bm()
     t_now = timeit.default_timer()
     response_time = t_now - t0
     print("%s: Creating 100k point objects took %f seconds" %
+          (datetime.datetime.now(), response_time))
+    response = {'response_time': response_time}
+    return jsonify(response)
+
+
+@app.route('/json_loads/')
+def json_loads_endpoint():
+    t0 = timeit.default_timer()
+    memory.json_loads_bm()
+    t_now = timeit.default_timer()
+    response_time = t_now - t0
+    print("%s: Loading json objects took %f seconds" %
+          (datetime.datetime.now(), response_time))
+    response = {'response_time': response_time}
+    return jsonify(response)
+
+
+@app.route('/path_lib/')
+def path_lib_endpoint():
+    t0 = timeit.default_timer()
+    memory.path_lib_bm()
+    t_now = timeit.default_timer()
+    response_time = t_now - t0
+    print("%s: Pathlib operations took %f seconds" %
           (datetime.datetime.now(), response_time))
     response = {'response_time': response_time}
     return jsonify(response)

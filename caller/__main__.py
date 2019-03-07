@@ -12,7 +12,6 @@ from caller import config, LOCATION
 
 
 APP_PATH = config.protocol + '://' + config.url + ':' + config.port + '/'
-WARM_UP = 3  # sets the number of seconds to wait after starting the server
 
 APP_OUTPUT = LOCATION + '../output.log'
 runner = perf.Runner()
@@ -28,7 +27,7 @@ def start_app(fmd_level):
     os.environ["FMD_LEVEL"] = str(fmd_level)
     with open(APP_OUTPUT, 'a') as f:
         subprocess.Popen(["flask", "run", "-p", config.port], stdout=f)
-    time.sleep(WARM_UP)
+    time.sleep(config.app_warmup)
 
 
 def pidigits():

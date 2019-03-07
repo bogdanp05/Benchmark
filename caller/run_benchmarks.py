@@ -11,13 +11,23 @@ config.read(LOCATION + '../config.ini')
 APP_PATH = config['app']['protocol'] + '://' + config['app']['url'] + ':' + config['app']['port'] + '/'
 
 
-def pidigits():
+def call_pi_digits():
     r = requests.get(APP_PATH + 'pidigits/')
     r.json()
 
 
-def my_float():
+def call_float():
     r = requests.get(APP_PATH + 'float/')
+    r.json()
+
+
+def call_json_loads():
+    r = requests.get(APP_PATH + 'json_loads/')
+    r.json()
+
+
+def call_path_lib():
+    r = requests.get(APP_PATH + 'path_lib/')
     r.json()
 
 
@@ -26,6 +36,10 @@ if __name__ == "__main__":
     processes = config['benchmark']['processes']
     runner = perf.Runner(values=values, processes=processes)
     runner.metadata['description'] = "Compute digits of pi."
-    runner.bench_func('pidigits', pidigits)
+    runner.bench_func('pidigits', call_pi_digits)
     runner.metadata['description'] = "Float benchmark"
-    runner.bench_func('float', my_float)
+    runner.bench_func('float', call_float)
+    runner.metadata['description'] = "Benchmark json.loads()"
+    runner.bench_func('json_loads', call_json_loads)
+    runner.metadata['description'] = "Test the performance of pathlib operations"
+    runner.bench_func('pathlib', call_path_lib)
