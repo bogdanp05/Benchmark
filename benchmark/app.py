@@ -4,8 +4,7 @@ import timeit
 from flask import Flask, jsonify, request
 
 from benchmark import probe, FMD_LEVEL, LOCATION
-from benchmark.loads import cpu
-from benchmark.loads import memory
+from benchmark.loads import cpu, memory, disk
 
 app = Flask(__name__)
 
@@ -21,18 +20,6 @@ if FMD_LEVEL > -1:
 @app.route('/')
 def root():
     return 'Server is running'
-
-
-@app.route('/powerset/<int:n>')
-def powerset(n):
-    t0 = timeit.default_timer()
-    memory.powerset(n)
-    t_now = timeit.default_timer()
-    response_time = t_now - t0
-    print("%s: Finding power set of %d elements took %f seconds" %
-          (datetime.datetime.utcnow(), n, response_time))
-    response = {'response_time': response_time}
-    return jsonify(response)
 
 
 @app.route('/start_probe/<float:sampling_rate>')
@@ -90,6 +77,30 @@ def path_lib_endpoint():
     t_now = timeit.default_timer()
     response_time = t_now - t0
     print("%s: Pathlib operations took %f seconds" %
+          (datetime.datetime.now(), response_time))
+    response = {'response_time': response_time}
+    return jsonify(response)
+
+
+@app.route('/sql_declarative/')
+def sql_declarative_endpoint():
+    t0 = timeit.default_timer()
+    disk.sql_declarative_bm()
+    t_now = timeit.default_timer()
+    response_time = t_now - t0
+    print("%s: Sql declarative took %f seconds" %
+          (datetime.datetime.now(), response_time))
+    response = {'response_time': response_time}
+    return jsonify(response)
+
+
+@app.route('/sql_imperative/')
+def sql_imperative_endpoint():
+    t0 = timeit.default_timer()
+    disk.sql_imperative_bm()
+    t_now = timeit.default_timer()
+    response_time = t_now - t0
+    print("%s: Sql imperative took %f seconds" %
           (datetime.datetime.now(), response_time))
     response = {'response_time': response_time}
     return jsonify(response)

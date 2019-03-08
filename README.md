@@ -36,26 +36,21 @@ pip install -r requirements.txt
 
 ### 2. Run benchmarks
 
-First, make sure to efine the hyper parameters in the `config.ini` file.
+**Make sure to define the hyper parameters in the `config.ini` file.**
+
+Remove all previously created `.db` files:
+```
+make clear
+```
 
 To run the benchmarks, go in the root of the project and run:
 ```
 python -m caller
 ```
 
-<!---
-To generate the plots, go in the root of the project and run:
-```
-python -m caller.plot.generate
-```
--->
 
 The results are saved into json files, in the `/results` folder.
 
-To compare results, from the root run:
-```
-python -m perf compare_to results/190305_12:35:44_-1.json results/190305_12:35:44_3.json --table
-```
 
 ### 3. Visualize results
 The results are saved into json files, in the `/results` folder. There
@@ -73,8 +68,9 @@ Make sure to replace the files in the command above with your own.
 
 *Work in progress*
 
+
 ## Clean up
-To remove all the db's created by FMD, run:
+To remove all the databases created by the benchmarks and FMD, run:
 ```
 make clear
 ```

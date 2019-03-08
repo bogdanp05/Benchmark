@@ -5,7 +5,6 @@ from performance.benchmarks import bm_pathlib, bm_json_loads
 
 PATH_LIB_LOOPS = 1
 JSON_LOOPS = 200
-NUM_FILES = 1000
 
 
 def json_loads_bm():

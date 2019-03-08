@@ -1,6 +1,6 @@
-# Remove all dbs created by FMD
+# Remove all databases created during the benchmark
 clear:
-	rm fmd*.db
+	rm *.db
 
 
 # Shutdown hanging server on port 5000 if necessary
