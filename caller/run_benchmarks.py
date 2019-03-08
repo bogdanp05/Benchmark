@@ -31,13 +31,18 @@ def call_path_lib():
     r.json()
 
 
-def call_sql_declarative():
-    r = requests.get(APP_PATH + 'sql_declarative/')
+def call_sql_combined():
+    r = requests.get(APP_PATH + 'sql_combined/')
     r.json()
 
 
-def call_sql_imperative():
-    r = requests.get(APP_PATH + 'sql_imperative/')
+def call_sql_writes():
+    r = requests.get(APP_PATH + 'sql_writes/')
+    r.json()
+
+
+def call_sql_reads():
+    r = requests.get(APP_PATH + 'sql_reads/')
     r.json()
 
 
@@ -45,15 +50,17 @@ if __name__ == "__main__":
     values = config['benchmark']['values']
     processes = config['benchmark']['processes']
     runner = perf.Runner(values=values, processes=processes)
-    # runner.metadata['description'] = "Compute digits of pi."
-    # runner.bench_func('pidigits', call_pi_digits)
-    # runner.metadata['description'] = "Float benchmark"
-    # runner.bench_func('float', call_float)
-    # runner.metadata['description'] = "Benchmark json.loads()"
-    # runner.bench_func('json_loads', call_json_loads)
-    # runner.metadata['description'] = "Test the performance of pathlib operations"
-    # runner.bench_func('pathlib', call_path_lib)
-    runner.metadata['description'] = "SQLAlchemy Declarative benchmark using SQLite"
-    runner.bench_func('sqlalchemy_declarative', call_sql_declarative)
-    runner.metadata['description'] = "SQLAlchemy Imperative benchmark using SQLite"
-    runner.bench_func('sqlalchemy_imperative', call_sql_imperative)
+    runner.metadata['description'] = "Compute digits of pi."
+    runner.bench_func('pidigits', call_pi_digits)
+    runner.metadata['description'] = "Float benchmark"
+    runner.bench_func('float', call_float)
+    runner.metadata['description'] = "Benchmark json.loads()"
+    runner.bench_func('json_loads', call_json_loads)
+    runner.metadata['description'] = "Test the performance of pathlib operations"
+    runner.bench_func('pathlib', call_path_lib)
+    runner.metadata['description'] = "SQLAlchemy combined benchmark using SQLite"
+    runner.bench_func('sqlalchemy_combined', call_sql_combined)
+    runner.metadata['description'] = "SQLAlchemy write benchmark using SQLite"
+    runner.bench_func('sqlalchemy_writes', call_sql_writes)
+    runner.metadata['description'] = "SQLAlchemy read benchmark using SQLite"
+    runner.bench_func('sqlalchemy_reads', call_sql_reads)

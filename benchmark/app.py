@@ -82,25 +82,37 @@ def path_lib_endpoint():
     return jsonify(response)
 
 
-@app.route('/sql_declarative/')
-def sql_declarative_endpoint():
+@app.route('/sql_combined/')
+def sql_combined_endpoint():
     t0 = timeit.default_timer()
-    disk.sql_declarative_bm()
+    disk.sql_combined_bm()
     t_now = timeit.default_timer()
     response_time = t_now - t0
-    print("%s: Sql declarative took %f seconds" %
+    print("%s: SQL combined took %f seconds" %
           (datetime.datetime.now(), response_time))
     response = {'response_time': response_time}
     return jsonify(response)
 
 
-@app.route('/sql_imperative/')
-def sql_imperative_endpoint():
+@app.route('/sql_writes/')
+def sql_writes_endpoint():
     t0 = timeit.default_timer()
-    disk.sql_imperative_bm()
+    disk.sql_writes()
     t_now = timeit.default_timer()
     response_time = t_now - t0
-    print("%s: Sql imperative took %f seconds" %
+    print("%s: SQL writes took %f seconds" %
+          (datetime.datetime.now(), response_time))
+    response = {'response_time': response_time}
+    return jsonify(response)
+
+
+@app.route('/sql_reads/')
+def sql_reads_endpoint():
+    t0 = timeit.default_timer()
+    disk.sql_reads()
+    t_now = timeit.default_timer()
+    response_time = t_now - t0
+    print("%s: SQL reads took %f seconds" %
           (datetime.datetime.now(), response_time))
     response = {'response_time': response_time}
     return jsonify(response)
