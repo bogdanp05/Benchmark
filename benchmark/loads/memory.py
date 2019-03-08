@@ -1,9 +1,11 @@
 import json
 import shutil
 
-from performance.benchmarks import bm_pathlib, bm_json_loads
+from performance.benchmarks import bm_json_loads
+from benchmark.loads.ported_benchmarks import bm_pathlib
 
-PATH_LIB_LOOPS = 1
+PATH_LIB_LOOPS = 6
+PATH_LIB_NUM_FILES = 400
 JSON_LOOPS = 200
 
 
@@ -17,8 +19,8 @@ def json_loads_bm():
 
 
 def path_lib_bm():
-    tmp_path = bm_pathlib.setup(bm_pathlib.NUM_FILES)
+    tmp_path = bm_pathlib.setup(PATH_LIB_NUM_FILES)
     try:
-        bm_pathlib.bench_pathlib(loops=PATH_LIB_LOOPS, tmp_path=tmp_path)
+        bm_pathlib.bench_pathlib(loops=PATH_LIB_LOOPS, tmp_path=tmp_path, num_files=PATH_LIB_NUM_FILES)
     finally:
         shutil.rmtree(tmp_path)
