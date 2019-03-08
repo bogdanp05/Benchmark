@@ -1,13 +1,26 @@
-def powerset(n):
-    lst = list(range(0, n))
-    # the power set of the empty set has one element, the empty set
-    result = [[]]
-    for x in lst:
-        # for every additional element in our set
-        # the power set consists of the subsets that don't
-        # contain this element (just take the previous power set)
-        # plus the subsets that do contain the element (use list
-        # comprehension to add [x] onto everything in the
-        # previous power set)
-        result.extend([subset + [x] for subset in result])
-    return result
+import json
+import shutil
+
+from performance.benchmarks import bm_json_loads
+from benchmark.loads.ported_benchmarks import bm_pathlib
+
+PATH_LIB_LOOPS = 6
+PATH_LIB_NUM_FILES = 400
+JSON_LOOPS = 200
+
+
+def json_loads_bm():
+    json_dict = json.dumps(bm_json_loads.DICT)
+    json_tuple = json.dumps(bm_json_loads.TUPLE)
+    json_dict_group = json.dumps(bm_json_loads.DICT_GROUP)
+    objs = (json_dict, json_tuple, json_dict_group)
+    for _ in range(JSON_LOOPS):
+        bm_json_loads.bench_json_loads(objs)
+
+
+def path_lib_bm():
+    tmp_path = bm_pathlib.setup(PATH_LIB_NUM_FILES)
+    try:
+        bm_pathlib.bench_pathlib(loops=PATH_LIB_LOOPS, tmp_path=tmp_path, num_files=PATH_LIB_NUM_FILES)
+    finally:
+        shutil.rmtree(tmp_path)
