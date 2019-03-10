@@ -56,7 +56,7 @@ The results are saved into json files, in the `/results` folder.
 The results are saved into json files, in the `/results` folder. There
 are 2 ways of viewing them:
 
-#### 3.1 Using the `perf` module 
+#### 3.1 Using the `perf` package 
 
 From the root run:
 ```
@@ -84,9 +84,15 @@ This will show a table similar to:
 ```
 Make sure to replace the files in the command above with your own.
 
-#### 3.2 Using the `plot` (local) module
+#### 3.2 Using the `visualize` (local) package
 
-*Work in progress*
+To get beautiful [violin plots](https://en.wikipedia.org/wiki/Violin_plot)
+of all the benchmark results, run:
+```
+python -m visualize results/190308_15:53:40/
+```
+
+Make sure to replace the path to the results folder with your own.
 
 
 ## Clean up
@@ -94,6 +100,12 @@ To remove all the databases created by the benchmarks and FMD, run:
 ```
 make clear
 ```
+
+To remove all the `html` files containing the plots, run:
+```
+make rm_plots
+```
+
 If there's a failure, the server will not shutdown and port 5000 is unusable.
 To shut down the server, run:
 ```

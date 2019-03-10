@@ -1,3 +1,4 @@
+import argparse
 import json
 import os
 from collections import defaultdict
@@ -5,13 +6,11 @@ from collections import defaultdict
 import plotly.graph_objs as go
 from plotly.offline import plot
 
-from visualize import RESULTS
+from visualize import RESULTS, LOCATION
 
-# TODO: force user to input path
-PATH = RESULTS + '190308_15:53:40/'
 
 """
-Structure of a K.json, with K=[-1,3]:
+Structure of a K.json file, with K=[-1,3]:
 {
     benchmarks: [
                     metadata: {name: float},
@@ -25,6 +24,13 @@ Structure of a K.json, with K=[-1,3]:
 """
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(description='Visualize benchmark results')
+    parser.add_argument('path', metavar='p', type=str, help='path of the results directory')
+    args = parser.parse_args()
+    return args
+
+
 def get_files(dir_path):
     """
     :param dir_path: path of the results directory
@@ -33,7 +39,7 @@ def get_files(dir_path):
     if not os.path.isdir(dir_path):
         os.sys.exit('%s is not a directory' % dir_path)
 
-    json_files = [file for file in os.listdir(PATH) if file.endswith('.json')]
+    json_files = [file for file in os.listdir(dir_path) if file.endswith('.json')]
     if len(json_files) == 0:
         os.sys.exit('%s does not contain any json files' % dir_path)
 
@@ -47,14 +53,6 @@ def read_json(file):
     """
     with open(file) as f:
         data = json.load(f)
-
-    print(data.keys())
-    # benchmarks = data['benchmarks']
-    # for b in benchmarks:
-    #     print(b['metadata']['name'])
-    #     runs = b['runs']
-    #     for r in runs:
-    #         print(r)
     return data
 
 
@@ -67,7 +65,7 @@ def get_full_data(dir_path, files):
     data = {}
     for file in files:
         key = int(os.path.splitext(file)[0])
-        value = read_json(dir_path + file)
+        value = read_json(os.path.join(dir_path, file))
         data[key] = value
     return data
 
@@ -119,22 +117,26 @@ def violin_plot(benchmark_data, benchmark_name):
             title="FMD monitoring level"
         ),
         yaxis=dict(
-            title="response time (s)"
-            # type='log'
+            title="response time (s)",
+            rangemode='tozero'
         )
     )
 
     fig = go.Figure(data=data, layout=layout)
-    plot(fig)
+    plot(fig, filename=LOCATION + benchmark_name + '.html')
 
 
 def main():
-    print("Violin plots of benchmark results from directory %s" % PATH)
-    files = get_files(PATH)
-    full_data = get_full_data(PATH, files)  # indexed by monitoring data
-    vis_data = get_visualization_data(full_data)
+    path = parse_args().path
+    # if not path:
+    #     os.sys.exit("")
+    print("Violin plots of benchmark results from directory %s" % path)
+    files = get_files(path)
+    full_data = get_full_data(path, files)  # indexed by monitoring level
+    vis_data = get_visualization_data(full_data)  # indexed by benchmark name
     for benchmark in vis_data.keys():
         violin_plot(vis_data[benchmark], benchmark)
+        break
 
 
 if __name__ == "__main__":
