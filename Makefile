@@ -1,7 +1,10 @@
-# Remove all databases created during the benchmark
+# Remove all databases created during the benchmarks
 clear:
 	rm *.db
 
+# Remove all plots
+rm_plots:
+	rm *.html
 
 # Shutdown hanging server on port 5000 if necessary
 shutdown:

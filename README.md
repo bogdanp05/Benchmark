@@ -56,7 +56,7 @@ The results are saved into json files, in the `/results` folder.
 The results are saved into json files, in the `/results` folder. There
 are 2 ways of viewing them:
 
-#### 3.1 Using the `perf` module 
+#### 3.1 Using the `perf` package 
 
 From the root run:
 ```
@@ -64,29 +64,35 @@ python -m perf compare_to results/190308_15:25:37/-1.json results/190308_15:25:3
 ```
 This will show a table similar to:
 ```
-+---------------------+--------+--------------------------------+
-| Benchmark           | -1     | 3                              |
-+=====================+========+================================+
-| pidigits            | 279 ms | 315 ms: 1.13x slower (+13%)    |
-+---------------------+--------+--------------------------------+
-| float               | 259 ms | 304 ms: 1.17x slower (+17%)    |
-+---------------------+--------+--------------------------------+
-| json_loads          | 249 ms | 283 ms: 1.14x slower (+14%)    |
-+---------------------+--------+--------------------------------+
-| pathlib             | 636 ms | 1.85 sec: 2.91x slower (+191%) |
-+---------------------+--------+--------------------------------+
-| sqlalchemy_combined | 209 ms | 586 ms: 2.80x slower (+180%)   |
-+---------------------+--------+--------------------------------+
-| sqlalchemy_writes   | 207 ms | 499 ms: 2.41x slower (+141%)   |
-+---------------------+--------+--------------------------------+
-| sqlalchemy_reads    | 205 ms | 346 ms: 1.69x slower (+69%)    |
-+---------------------+--------+--------------------------------+
++---------------------+--------+------------------------------+
+| Benchmark           | -1     | 3                            |
++=====================+========+==============================+
+| pidigits            | 284 ms | 314 ms: 1.11x slower (+11%)  |
++---------------------+--------+------------------------------+
+| float               | 255 ms | 304 ms: 1.19x slower (+19%)  |
++---------------------+--------+------------------------------+
+| json_loads          | 250 ms | 291 ms: 1.16x slower (+16%)  |
++---------------------+--------+------------------------------+
+| pathlib             | 235 ms | 700 ms: 2.98x slower (+198%) |
++---------------------+--------+------------------------------+
+| sqlalchemy_combined | 207 ms | 589 ms: 2.84x slower (+184%) |
++---------------------+--------+------------------------------+
+| sqlalchemy_writes   | 211 ms | 531 ms: 2.51x slower (+151%) |
++---------------------+--------+------------------------------+
+| sqlalchemy_reads    | 208 ms | 353 ms: 1.69x slower (+69%)  |
++---------------------+--------+------------------------------+
 ```
 Make sure to replace the files in the command above with your own.
 
-#### 3.2 Using the `plot` (local) module
+#### 3.2 Using the `visualize` (local) package
 
-*Work in progress*
+To get beautiful [violin plots](https://en.wikipedia.org/wiki/Violin_plot)
+of all the benchmark results, run:
+```
+python -m visualize results/190308_15:53:40/
+```
+
+Make sure to replace the path to the results folder with your own.
 
 
 ## Clean up
@@ -94,6 +100,12 @@ To remove all the databases created by the benchmarks and FMD, run:
 ```
 make clear
 ```
+
+To remove all the `html` files containing the plots, run:
+```
+make rm_plots
+```
+
 If there's a failure, the server will not shutdown and port 5000 is unusable.
 To shut down the server, run:
 ```
