@@ -136,7 +136,6 @@ def main():
     vis_data = get_visualization_data(full_data)  # indexed by benchmark name
     for benchmark in vis_data.keys():
         violin_plot(vis_data[benchmark], benchmark)
-        break
 
 
 if __name__ == "__main__":
