@@ -6,3 +6,4 @@ flask_monitoringdashboard==2.1.1      # FMD
 plotly==3.6.1                         # for building nice plots
 performance==0.7.0                    # for getting the benchmarks
 perf==1.6.0                           # benchmarking toolkit
+gunicorn==19.9.0                      # web server

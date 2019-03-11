@@ -1,7 +1,7 @@
 import datetime
 import timeit
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 
 from benchmark import probe, FMD_LEVEL, LOCATION
 from benchmark.loads import cpu, memory, disk
@@ -116,16 +116,3 @@ def sql_reads_endpoint():
           (datetime.datetime.now(), response_time))
     response = {'response_time': response_time}
     return jsonify(response)
-
-
-def shutdown_server():
-    func = request.environ.get('werkzeug.server.shutdown')
-    if func is None:
-        raise RuntimeError('Not running with the Werkzeug Server')
-    func()
-
-
-@app.route('/shutdown', methods=['POST'])
-def shutdown():
-    shutdown_server()
-    return 'Server shutting down...'

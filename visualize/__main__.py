@@ -6,9 +6,6 @@ from collections import defaultdict
 import plotly.graph_objs as go
 from plotly.offline import plot
 
-from visualize import RESULTS, LOCATION
-
-
 """
 Structure of a K.json file, with K=[-1,3]:
 {
@@ -94,7 +91,7 @@ def get_visualization_data(full_data):
     return data
 
 
-def violin_plot(benchmark_data, benchmark_name):
+def violin_plot(benchmark_data, benchmark_name, dir_path):
     data = []
     for k in sorted(benchmark_data.keys()):
         trace = {
@@ -123,19 +120,17 @@ def violin_plot(benchmark_data, benchmark_name):
     )
 
     fig = go.Figure(data=data, layout=layout)
-    plot(fig, filename=LOCATION + benchmark_name + '.html')
+    plot(fig, filename=os.path.join(dir_path, benchmark_name + '.html'))
 
 
 def main():
     path = parse_args().path
-    # if not path:
-    #     os.sys.exit("")
     print("Violin plots of benchmark results from directory %s" % path)
     files = get_files(path)
     full_data = get_full_data(path, files)  # indexed by monitoring level
     vis_data = get_visualization_data(full_data)  # indexed by benchmark name
     for benchmark in vis_data.keys():
-        violin_plot(vis_data[benchmark], benchmark)
+        violin_plot(vis_data[benchmark], benchmark, path)
 
 
 if __name__ == "__main__":

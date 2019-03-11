@@ -2,6 +2,7 @@ import datetime
 import os
 import subprocess
 import time
+import signal
 
 import perf
 import requests
@@ -26,7 +27,15 @@ def set_flask_environment():
 def start_app(fmd_level):
     os.environ["FMD_LEVEL"] = str(fmd_level)
     with open(APP_OUTPUT, 'a') as f:
-        subprocess.Popen(["flask", "run", "-p", config.port], stdout=f)
+        server_process = subprocess.Popen(["flask", "run", "-p", config.port], stdout=f)
+    time.sleep(config.app_warmup)
+    return server_process.pid
+
+
+def start_app_gunicorn(fmd_level):
+    os.environ["FMD_LEVEL"] = str(fmd_level)
+    with open(APP_OUTPUT, 'a') as f:
+        subprocess.Popen(["gunicorn", "-w", 4, "-b", config.url + ':' + config.port, "benchmrk.app:app"], stdout=f)
     time.sleep(config.app_warmup)
 
 
@@ -35,8 +44,8 @@ def pidigits():
     r.json()
 
 
-def stop_app():
-    requests.post(APP_PATH + 'shutdown')
+def stop_app(server_pid):
+    os.kill(server_pid, signal.SIGTERM)
 
 
 def run_perf_script():
@@ -65,10 +74,10 @@ def main():
     set_flask_environment()
     create_results_dir()
     for level in config.levels:
-        start_app(level)
+        server_pid = start_app(level)
         suite = run_perf_script()
         suite.dump(get_file_name(level))
-        stop_app()
+        stop_app(server_pid)
 
 
 if __name__ == "__main__":
