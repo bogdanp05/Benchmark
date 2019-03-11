@@ -18,6 +18,7 @@ class Config(object):
         self.url = "127.0.0.1"
         self.port = "5000"
         self.protocol = "http"
+        self.webserver = "gunicorn"
 
     def init_from(self, file=None):
         parser = configparser.RawConfigParser()
@@ -33,3 +34,4 @@ class Config(object):
         self.url = parse_string(parser, 'app', 'url', self.url)
         self.port = parse_string(parser, 'app', 'port', self.url)
         self.protocol = parse_string(parser, 'app', 'protocol', self.protocol)
+        self.webserver = parse_string(parser, 'app', 'webserver', self.webserver)

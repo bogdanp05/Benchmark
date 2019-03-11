@@ -1,16 +1,14 @@
 import datetime
 import os
+import signal
 import subprocess
 import time
-import signal
 
 import perf
-import requests
 from performance.run import run_command
 from performance.utils import temporary_file
 
 from caller import config, LOCATION
-
 
 APP_PATH = config.protocol + '://' + config.url + ':' + config.port + '/'
 
@@ -24,24 +22,18 @@ def set_flask_environment():
     print(os.environ["FLASK_APP"])
 
 
-def start_app(fmd_level):
+def start_app(fmd_level, webserver):
     os.environ["FMD_LEVEL"] = str(fmd_level)
+    command = []
+    if webserver == 'werkzeug':
+        command.extend(["flask", "run", "-p", config.port])
+    else:
+        command.extend(["gunicorn", "-w", "1", "-b", config.url + ':' + config.port, "benchmark.app:app"])
+
     with open(APP_OUTPUT, 'a') as f:
-        server_process = subprocess.Popen(["flask", "run", "-p", config.port], stdout=f)
+        server_process = subprocess.Popen(command, stdout=f)
     time.sleep(config.app_warmup)
     return server_process.pid
-
-
-def start_app_gunicorn(fmd_level):
-    os.environ["FMD_LEVEL"] = str(fmd_level)
-    with open(APP_OUTPUT, 'a') as f:
-        subprocess.Popen(["gunicorn", "-w", 4, "-b", config.url + ':' + config.port, "benchmrk.app:app"], stdout=f)
-    time.sleep(config.app_warmup)
-
-
-def pidigits():
-    r = requests.get(APP_PATH + 'pidigits/')
-    r.json()
 
 
 def stop_app(server_pid):
@@ -74,7 +66,7 @@ def main():
     set_flask_environment()
     create_results_dir()
     for level in config.levels:
-        server_pid = start_app(level)
+        server_pid = start_app(level, config.webserver)
         suite = run_perf_script()
         suite.dump(get_file_name(level))
         stop_app(server_pid)
