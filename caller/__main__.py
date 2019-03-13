@@ -50,6 +50,7 @@ def run_perf_script():
         cmd.extend(('--output', tmp))
         print(cmd)
         run_command(cmd)
+        print("--------runner done")
         return perf.BenchmarkSuite.load(tmp)
 
 
