@@ -37,8 +37,9 @@ def parse_list(parser, header, arg_name, arg_value):
     """
     if parser.has_option(header, arg_name):
         val = ast.literal_eval(parser.get(header, arg_name))
+        print(type(val))
         t = type(val)
-        if t == list:
+        if t == list or t == tuple:
             return val
         if t == int:
             return [val]
