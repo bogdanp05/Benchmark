@@ -4,6 +4,7 @@ import os
 import signal
 import subprocess
 import time
+import glob
 
 import perf
 from performance.run import run_command
@@ -49,15 +50,26 @@ def start_app(fmd_level, webserver):
     return server_process.pid
 
 
-def run_perf_script():
+def stop_app(server_pid):
+    os.kill(server_pid, signal.SIGTERM)
+
+
+def delete_databases():
+    # TODO: for mysql I need a better script
+    [os.remove(x) for x in glob.glob(LOCATION + "../*.db")]
+
+
+def run_perf_script(level):
     bm_path = LOCATION + 'run_benchmarks.py'
     cmd = list(["python"])
     cmd.append('-u')
     cmd.append(bm_path)
 
     benchmarks = []
-    time.sleep(config.app_cooldown)
     for e in ENDPOINTS:
+        delete_databases()
+        server_pid = start_app(level, config.webserver)
+        time.sleep(config.bm_cooldown)
         benchmark_file = configparser.ConfigParser()
         benchmark_file['bench'] = {'name': e[0], 'desc': e[1]}
         with open('bm_info.ini', 'w') as configfile:
@@ -67,6 +79,8 @@ def run_perf_script():
             cmd.extend(('--output', tmp))
             run_command(cmd)
             benchmarks.append(perf.Benchmark.load(tmp))
+
+        stop_app(server_pid)
         time.sleep(config.bm_cooldown)
 
     return perf.BenchmarkSuite(benchmarks)
@@ -77,18 +91,12 @@ def get_file_name(monitor_level):
     return filename
 
 
-def stop_app(server_pid):
-    os.kill(server_pid, signal.SIGTERM)
-
-
 def main():
     set_flask_environment()
     create_results_dir()
     for level in config.levels:
-        server_pid = start_app(level, config.webserver)
-        suite = run_perf_script()
+        suite = run_perf_script(level)
         suite.dump(get_file_name(level))
-        stop_app(server_pid)
 
 
 if __name__ == "__main__":

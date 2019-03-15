@@ -11,7 +11,6 @@ class Config(object):
         # benchmark
         self.values = 5
         self.processes = 20
-        self.app_cooldown = 30
         self.bm_cooldown = 10
 
         # app
@@ -28,7 +27,6 @@ class Config(object):
         # parse 'benchmark'
         self.values = parse_literal(config_parser, 'benchmark', 'values', self.values)
         self.processes = parse_literal(config_parser, 'benchmark', 'processes', self.processes)
-        self.app_cooldown = parse_literal(config_parser, 'benchmark', 'app_cooldown', self.app_cooldown)
         self.bm_cooldown = parse_literal(config_parser, 'benchmark', 'bm_cooldown', self.bm_cooldown)
 
         # parse app

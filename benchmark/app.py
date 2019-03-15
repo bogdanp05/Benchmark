@@ -12,7 +12,8 @@ if FMD_LEVEL > -1:
     print("FMD level: %d" % FMD_LEVEL)
     import flask_monitoringdashboard as dashboard
     # TODO: make this configurable
-    dashboard.config.database_name = 'sqlite:///' + LOCATION + '../fmd' + str(FMD_LEVEL) + '.db'
+    db_url = 'sqlite:///' + LOCATION + '../fmd' + str(FMD_LEVEL) + '.db'
+    dashboard.config.database_name = db_url
     dashboard.config.monitor_level = FMD_LEVEL
     dashboard.bind(app)
 

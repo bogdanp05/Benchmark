@@ -38,11 +38,6 @@ pip install -r requirements.txt
 
 **Make sure to define the hyper parameters in the `config.ini` file.**
 
-Remove all previously created `.db` files:
-```
-make clear
-```
-
 To run the benchmarks, go in the root of the project and run:
 ```
 make run
