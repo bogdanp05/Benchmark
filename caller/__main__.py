@@ -5,6 +5,7 @@ import signal
 import subprocess
 import time
 import glob
+import shutil
 
 import perf
 from performance.run import run_command
@@ -13,10 +14,9 @@ from performance.utils import temporary_file
 from caller import config, LOCATION
 
 APP_PATH = config.protocol + '://' + config.url + ':' + config.port + '/'
-
 APP_OUTPUT = LOCATION + '../output.log'
-runner = perf.Runner()
 START_TIME = datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")
+RESULTS_DIR = LOCATION + '../results/' + START_TIME
 # ENDPOINTS = [['pidigits', 'Compute digits of pi.'],
 #              ['float', 'Float benchmark'],
 #              ['json_loads', 'Benchmark json.loads()'],
@@ -34,7 +34,11 @@ def set_flask_environment():
 
 
 def create_results_dir():
-    os.mkdir(LOCATION + '../results/' + START_TIME)
+    os.mkdir(RESULTS_DIR)
+
+
+def copy_config_file():
+    shutil.copy2(LOCATION + '../config.ini', RESULTS_DIR)
 
 
 def start_app(fmd_level, webserver):
@@ -94,6 +98,7 @@ def get_file_name(monitor_level):
 def main():
     set_flask_environment()
     create_results_dir()
+    copy_config_file()
     for level in config.levels:
         suite = run_perf_script(level)
         suite.dump(get_file_name(level))
