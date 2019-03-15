@@ -1,9 +1,10 @@
 from benchmark.loads.ported_benchmarks import bm_sqlalchemy
+from benchmark import config
 
 # TODO: make this configurable
-LOOPS = 3
-WRITES = 7
-READS = 70
+LOOPS = 2 if config.speed == 'fast' else 3
+WRITES = 5 if config.speed == 'fast' else 7
+READS = 50 if config.speed == 'fast' else 70
 
 
 def sql_combined_bm():

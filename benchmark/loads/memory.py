@@ -3,10 +3,11 @@ import shutil
 
 from performance.benchmarks import bm_json_loads
 from benchmark.loads.ported_benchmarks import bm_pathlib
+from benchmark import config
 
-PATH_LIB_LOOPS = 6
-PATH_LIB_NUM_FILES = 400
-JSON_LOOPS = 200
+PATH_LIB_LOOPS = 4 if config.speed == "fast" else 6
+PATH_LIB_NUM_FILES = 200 if config.speed == "fast" else 400
+JSON_LOOPS = 90 if config.speed == "fast" else 200
 
 
 def json_loads_bm():
