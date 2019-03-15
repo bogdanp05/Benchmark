@@ -9,18 +9,9 @@ config = configparser.ConfigParser()
 config.read(LOCATION + '../config.ini')
 
 config2 = configparser.ConfigParser()
-config2.read(LOCATION + '../example.ini')
+config2.read(LOCATION + '../bm_info.ini')
 
 APP_PATH = config['app']['protocol'] + '://' + config['app']['url'] + ':' + config['app']['port'] + '/'
-# ENDPOINTS = [['pidigits', 'Compute digits of pi.'],
-#              ['float', 'Float benchmark'],
-#              ['json_loads', 'Benchmark json.loads()'],
-#              ['path_lib', 'Test the performance of pathlib operations'],
-#              ['sql_combined', 'SQLAlchemy combined benchmark using SQLite'],
-#              ['sql_writes', 'SQLAlchemy write benchmark using SQLite'],
-#              ['sql_reads', 'SQLAlchemy read benchmark using SQLite']]
-ENDPOINTS = [['pidigits', 'Compute digits of pi.'],
-             ['float', 'Float benchmark']]
 
 
 def call_endpoint(endpoint):

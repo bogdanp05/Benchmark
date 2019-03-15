@@ -16,7 +16,13 @@ APP_PATH = config.protocol + '://' + config.url + ':' + config.port + '/'
 APP_OUTPUT = LOCATION + '../output.log'
 runner = perf.Runner()
 START_TIME = datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")
-
+# ENDPOINTS = [['pidigits', 'Compute digits of pi.'],
+#              ['float', 'Float benchmark'],
+#              ['json_loads', 'Benchmark json.loads()'],
+#              ['path_lib', 'Test the performance of pathlib operations'],
+#              ['sql_combined', 'SQLAlchemy combined benchmark using SQLite'],
+#              ['sql_writes', 'SQLAlchemy write benchmark using SQLite'],
+#              ['sql_reads', 'SQLAlchemy read benchmark using SQLite']]
 ENDPOINTS = [['pidigits', 'Compute digits of pi.'],
              ['float', 'Float benchmark']]
 
@@ -24,6 +30,10 @@ ENDPOINTS = [['pidigits', 'Compute digits of pi.'],
 def set_flask_environment():
     os.environ["FLASK_APP"] = LOCATION + '../benchmark/app.py'
     print(os.environ["FLASK_APP"])
+
+
+def create_results_dir():
+    os.mkdir(LOCATION + '../results/' + START_TIME)
 
 
 def start_app(fmd_level, webserver):
@@ -36,12 +46,7 @@ def start_app(fmd_level, webserver):
 
     with open(APP_OUTPUT, 'a') as f:
         server_process = subprocess.Popen(command, stdout=f)
-    time.sleep(config.app_warmup)
     return server_process.pid
-
-
-def stop_app(server_pid):
-    os.kill(server_pid, signal.SIGTERM)
 
 
 def run_perf_script():
@@ -51,28 +56,29 @@ def run_perf_script():
     cmd.append(bm_path)
 
     benchmarks = []
+    time.sleep(config.app_cooldown)
     for e in ENDPOINTS:
         benchmark_file = configparser.ConfigParser()
         benchmark_file['bench'] = {'name': e[0], 'desc': e[1]}
-        with open('example.ini', 'w') as configfile:
+        with open('bm_info.ini', 'w') as configfile:
             benchmark_file.write(configfile)
 
         with temporary_file() as tmp:
             cmd.extend(('--output', tmp))
-            print(cmd)
             run_command(cmd)
             benchmarks.append(perf.Benchmark.load(tmp))
+        time.sleep(config.bm_cooldown)
 
     return perf.BenchmarkSuite(benchmarks)
-
-
-def create_results_dir():
-    os.mkdir(LOCATION + '../results/' + START_TIME)
 
 
 def get_file_name(monitor_level):
     filename = LOCATION + '../results/' + START_TIME + '/' + str(monitor_level) + '.json'
     return filename
+
+
+def stop_app(server_pid):
+    os.kill(server_pid, signal.SIGTERM)
 
 
 def main():
