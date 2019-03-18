@@ -2,6 +2,7 @@ import argparse
 import json
 import os
 from collections import defaultdict
+from pprint import pprint
 
 import plotly.graph_objs as go
 from plotly.offline import plot
@@ -91,7 +92,7 @@ def get_visualization_data(full_data):
     return data
 
 
-def violin_plot(benchmark_data, benchmark_name, dir_path):
+def violin_plot(benchmark_data, benchmark_name, dir_path, max_val):
     data = []
     for k in sorted(benchmark_data.keys()):
         trace = {
@@ -115,7 +116,7 @@ def violin_plot(benchmark_data, benchmark_name, dir_path):
         ),
         yaxis=dict(
             title="response time (s)",
-            rangemode='tozero'
+            range=[0, max_val]
         )
     )
 
@@ -129,8 +130,9 @@ def main():
     files = get_files(path)
     full_data = get_full_data(path, files)  # indexed by monitoring level
     vis_data = get_visualization_data(full_data)  # indexed by benchmark name
+    max_val = max(max(vv) for v in vis_data.values() for vv in v.values())
     for benchmark in vis_data.keys():
-        violin_plot(vis_data[benchmark], benchmark, path)
+        violin_plot(vis_data[benchmark], benchmark, path, max_val)
 
 
 if __name__ == "__main__":

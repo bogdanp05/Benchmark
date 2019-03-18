@@ -91,6 +91,7 @@ def main():
     create_results_dir()
     copy_config_file()
     for level in config.levels:
+        print("FMD level %d" % level)
         suite = run_perf_script(level)
         suite.dump(get_file_name(level))
 
