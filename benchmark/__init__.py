@@ -5,6 +5,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String, exc
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, sessionmaker, scoped_session
+from config import Config
 
 """
 FMD level and location configuration
@@ -12,6 +13,11 @@ FMD level and location configuration
 FMD_LEVEL = int(os.environ["FMD_LEVEL"]) if "FMD_LEVEL" in os.environ else -1
 LOCATION = os.path.abspath(os.path.dirname(__file__)) + '/'
 
+"""
+Settings from the config file
+"""
+config = Config()
+config.init_from(file=LOCATION + '../config.ini')
 
 """
 Declarative db configuration

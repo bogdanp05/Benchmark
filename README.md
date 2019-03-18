@@ -38,14 +38,9 @@ pip install -r requirements.txt
 
 **Make sure to define the hyper parameters in the `config.ini` file.**
 
-Remove all previously created `.db` files:
-```
-make clear
-```
-
 To run the benchmarks, go in the root of the project and run:
 ```
-python -m caller
+make run
 ```
 
 
@@ -93,6 +88,14 @@ python -m visualize results/190308_15:53:40/
 ```
 
 Make sure to replace the path to the results folder with your own.
+
+**OR**
+
+```
+make view
+```
+
+to view the most recent results.
 
 
 ## Clean up
