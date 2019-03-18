@@ -6,6 +6,8 @@ from flask import Flask, jsonify
 from benchmark import probe, FMD_LEVEL, LOCATION
 from benchmark.loads import cpu, memory, disk
 
+from functools import wraps
+
 app = Flask(__name__)
 
 if FMD_LEVEL > -1:
@@ -35,85 +37,55 @@ def stop_probe():
     return 'OK'
 
 
+def duration(func):
+    @wraps(func)
+    def decorated_function():
+        t_0 = timeit.default_timer()
+        func()
+        t_1 = timeit.default_timer()
+        response_time = t_1 - t_0
+        print("%s: %s took %f seconds" % (datetime.datetime.now(), func.__name__, response_time))
+        return jsonify({'response_time': response_time})
+    return decorated_function
+
+
 @app.route('/pidigits/')
+@duration
 def pi_digits_endpoint():
-    t0 = timeit.default_timer()
     cpu.pi_digits_bm()
-    t_now = timeit.default_timer()
-    response_time = t_now - t0
-    print("%s: Finding 2000 digits of pi took %f seconds" %
-          (datetime.datetime.now(), response_time))
-    response = {'response_time': response_time}
-    return jsonify(response)
 
 
 @app.route('/float/')
+@duration
 def float_endpoint():
-    t0 = timeit.default_timer()
     cpu.float_bm()
-    t_now = timeit.default_timer()
-    response_time = t_now - t0
-    print("%s: Creating 100k point objects took %f seconds" %
-          (datetime.datetime.now(), response_time))
-    response = {'response_time': response_time}
-    return jsonify(response)
 
 
 @app.route('/json_loads/')
+@duration
 def json_loads_endpoint():
-    t0 = timeit.default_timer()
     memory.json_loads_bm()
-    t_now = timeit.default_timer()
-    response_time = t_now - t0
-    print("%s: Loading json objects took %f seconds" %
-          (datetime.datetime.now(), response_time))
-    response = {'response_time': response_time}
-    return jsonify(response)
 
 
 @app.route('/path_lib/')
+@duration
 def path_lib_endpoint():
-    t0 = timeit.default_timer()
     memory.path_lib_bm()
-    t_now = timeit.default_timer()
-    response_time = t_now - t0
-    print("%s: Pathlib operations took %f seconds" %
-          (datetime.datetime.now(), response_time))
-    response = {'response_time': response_time}
-    return jsonify(response)
 
 
 @app.route('/sql_combined/')
+@duration
 def sql_combined_endpoint():
-    t0 = timeit.default_timer()
     disk.sql_combined_bm()
-    t_now = timeit.default_timer()
-    response_time = t_now - t0
-    print("%s: SQL combined took %f seconds" %
-          (datetime.datetime.now(), response_time))
-    response = {'response_time': response_time}
-    return jsonify(response)
 
 
 @app.route('/sql_writes/')
+@duration
 def sql_writes_endpoint():
-    t0 = timeit.default_timer()
     disk.sql_writes()
-    t_now = timeit.default_timer()
-    response_time = t_now - t0
-    print("%s: SQL writes took %f seconds" %
-          (datetime.datetime.now(), response_time))
-    response = {'response_time': response_time}
-    return jsonify(response)
 
 
 @app.route('/sql_reads/')
+@duration
 def sql_reads_endpoint():
-    t0 = timeit.default_timer()
     disk.sql_reads()
-    t_now = timeit.default_timer()
-    response_time = t_now - t0
-    print("%s: SQL reads took %f seconds" %
-          (datetime.datetime.now(), response_time))
-    response = {'response_time': response_time}
-    return jsonify(response)

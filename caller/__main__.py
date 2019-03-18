@@ -17,15 +17,7 @@ APP_PATH = config.protocol + '://' + config.url + ':' + config.port + '/'
 APP_OUTPUT = LOCATION + '../output.log'
 START_TIME = datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")
 RESULTS_DIR = LOCATION + '../results/' + START_TIME
-# ENDPOINTS = [['pidigits', 'Compute digits of pi.'],
-#              ['float', 'Float benchmark'],
-#              ['json_loads', 'Benchmark json.loads()'],
-#              ['path_lib', 'Test the performance of pathlib operations'],
-#              ['sql_combined', 'SQLAlchemy combined benchmark using SQLite'],
-#              ['sql_writes', 'SQLAlchemy write benchmark using SQLite'],
-#              ['sql_reads', 'SQLAlchemy read benchmark using SQLite']]
 BENCHMARKS = config.benchmarks
-print(BENCHMARKS)
 
 
 def set_flask_environment():
