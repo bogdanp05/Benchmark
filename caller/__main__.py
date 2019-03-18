@@ -22,7 +22,6 @@ BENCHMARKS = config.benchmarks
 
 def set_flask_environment():
     os.environ["FLASK_APP"] = LOCATION + '../benchmark/app.py'
-    print(os.environ["FLASK_APP"])
 
 
 def create_results_dir():

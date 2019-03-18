@@ -1,12 +1,12 @@
 import datetime
+import logging
 import timeit
+from functools import wraps
 
 from flask import Flask, jsonify
 
 from benchmark import probe, FMD_LEVEL, LOCATION
 from benchmark.loads import cpu, memory, disk
-
-from functools import wraps
 
 app = Flask(__name__)
 
@@ -18,6 +18,10 @@ if FMD_LEVEL > -1:
     dashboard.config.database_name = db_url
     dashboard.config.monitor_level = FMD_LEVEL
     dashboard.bind(app)
+
+
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 
 @app.route('/')
@@ -89,3 +93,15 @@ def sql_writes_endpoint():
 @duration
 def sql_reads_endpoint():
     disk.sql_reads()
+
+
+@app.route('/file_writes/')
+@duration
+def file_writes_endpoint():
+    disk.write_file()
+
+
+@app.route('/file_reads/')
+@duration
+def file_reads_endpoint():
+    disk.read_file()
