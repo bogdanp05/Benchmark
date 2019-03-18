@@ -20,8 +20,8 @@ def call_endpoint(endpoint):
 
 
 if __name__ == "__main__":
-    values = config['benchmark']['values']
-    processes = config['benchmark']['processes']
+    values = config['run']['values']
+    processes = config['run']['processes']
     runner = perf.Runner(values=values, processes=processes)
     runner.metadata['description'] = bm_info['bench']['desc']
     runner.bench_func(bm_info['bench']['name'], call_endpoint, bm_info['bench']['name'])

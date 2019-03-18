@@ -24,8 +24,8 @@ RESULTS_DIR = LOCATION + '../results/' + START_TIME
 #              ['sql_combined', 'SQLAlchemy combined benchmark using SQLite'],
 #              ['sql_writes', 'SQLAlchemy write benchmark using SQLite'],
 #              ['sql_reads', 'SQLAlchemy read benchmark using SQLite']]
-ENDPOINTS = [['pidigits', 'Compute digits of pi.'],
-             ['float', 'Float benchmark']]
+BENCHMARKS = config.benchmarks
+print(BENCHMARKS)
 
 
 def set_flask_environment():
@@ -70,12 +70,12 @@ def run_perf_script(level):
     cmd.append(bm_path)
 
     benchmarks = []
-    for e in ENDPOINTS:
+    for b in BENCHMARKS:
         delete_databases()
         server_pid = start_app(level, config.webserver)
         time.sleep(config.bm_cooldown)
         benchmark_file = configparser.ConfigParser()
-        benchmark_file['bench'] = {'name': e[0], 'desc': e[1]}
+        benchmark_file['bench'] = {'name': b[0], 'desc': b[1]}
         with open('bm_info.ini', 'w') as configfile:
             benchmark_file.write(configfile)
 
