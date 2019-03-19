@@ -5,7 +5,8 @@ from functools import wraps
 
 from flask import Flask, jsonify
 
-from benchmark import probe, FMD_LEVEL, LOCATION
+from benchmark import config
+from benchmark import probe, FMD_LEVEL
 from benchmark.loads import cpu, memory, disk
 
 app = Flask(__name__)
@@ -13,8 +14,7 @@ app = Flask(__name__)
 if FMD_LEVEL > -1:
     print("FMD level: %d" % FMD_LEVEL)
     import flask_monitoringdashboard as dashboard
-    # TODO: make this configurable
-    db_url = 'sqlite:///' + LOCATION + '../fmd' + str(FMD_LEVEL) + '.db'
+    db_url = config.db_url
     dashboard.config.database_name = db_url
     dashboard.config.monitor_level = FMD_LEVEL
     dashboard.bind(app)

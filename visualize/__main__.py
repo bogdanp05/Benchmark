@@ -2,7 +2,6 @@ import argparse
 import json
 import os
 from collections import defaultdict
-from pprint import pprint
 
 import plotly.graph_objs as go
 from plotly.offline import plot
