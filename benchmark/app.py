@@ -68,13 +68,19 @@ def float_endpoint():
 @app.route('/fib/')
 @duration
 def fib_endpoint():
-    recursive.fibonacci()
+    recursive.fibonacci_bm()
 
 
 @app.route('/json_loads/')
 @duration
 def json_loads_endpoint():
     memory.json_loads_bm()
+
+
+@app.route('/powerset/')
+@duration
+def powerset_endpoint():
+    memory.powerset_bm()
 
 
 @app.route('/path_lib/')

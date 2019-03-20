@@ -3,7 +3,7 @@ from benchmark import config
 FIB = 27 if config.speed == "fast" else 28
 
 
-def fibonacci():
+def fibonacci_bm():
     get_fib(FIB)
 
 
