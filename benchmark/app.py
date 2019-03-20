@@ -7,7 +7,7 @@ from flask import Flask, jsonify
 
 from benchmark import config
 from benchmark import probe, FMD_LEVEL
-from benchmark.loads import cpu, memory, disk
+from benchmark.loads import cpu, memory, disk, recursive
 
 app = Flask(__name__)
 
@@ -63,6 +63,12 @@ def pi_digits_endpoint():
 @duration
 def float_endpoint():
     cpu.float_bm()
+
+
+@app.route('/fib/')
+@duration
+def fib_endpoint():
+    recursive.fibonacci()
 
 
 @app.route('/json_loads/')

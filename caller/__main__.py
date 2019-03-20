@@ -19,6 +19,8 @@ APP_OUTPUT = LOCATION + '../output.log'
 START_TIME = datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")
 RESULTS_DIR = LOCATION + '../results/' + START_TIME
 BENCHMARKS = config.benchmarks
+print(BENCHMARKS)
+print(type(BENCHMARKS))
 
 
 def set_flask_environment():
