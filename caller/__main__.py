@@ -1,15 +1,16 @@
 import configparser
 import datetime
 import os
+import shutil
 import signal
 import subprocess
+import sys
 import time
-import glob
-import shutil
 
 import perf
 from performance.run import run_command
 from performance.utils import temporary_file
+from sqlalchemy import create_engine, MetaData, exc
 
 from caller import config, LOCATION
 
@@ -49,9 +50,16 @@ def stop_app(server_pid):
     os.kill(server_pid, signal.SIGTERM)
 
 
-def delete_databases():
-    # TODO: for mysql I need a better script
-    [os.remove(x) for x in glob.glob(LOCATION + "../*.db")]
+def drop_tables():
+    try:
+        engine = create_engine(config.db_url)
+        meta = MetaData(bind=engine)
+        meta.reflect()
+        for tbl in reversed(meta.sorted_tables):
+            engine.execute(tbl.delete())
+    except exc.InternalError as e:
+        print(e)
+        sys.exit(1)
 
 
 def run_perf_script(level):
@@ -62,7 +70,7 @@ def run_perf_script(level):
 
     benchmarks = []
     for b in BENCHMARKS:
-        delete_databases()
+        drop_tables()
         server_pid = start_app(level, config.webserver)
         time.sleep(config.bm_cooldown)
         benchmark_file = configparser.ConfigParser()

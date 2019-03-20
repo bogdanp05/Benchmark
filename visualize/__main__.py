@@ -80,7 +80,7 @@ def get_visualization_data(full_data):
     for key in full_data.keys():
         benchmarks = full_data[key]['benchmarks']
         for b in benchmarks:
-            name = b['metadata']['name']
+            name = b['metadata']['name'] if len(benchmarks) != 1 else full_data[key]['metadata']['name']
             values = []
             runs = b['runs']
             for r in runs:

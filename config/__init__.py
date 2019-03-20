@@ -15,11 +15,14 @@ class Config(object):
         self.speed = "normal"
 
         # app
-        self.levels = [-1, 0, 1, 2, 3]
         self.url = "127.0.0.1"
         self.port = "5000"
         self.protocol = "http"
         self.webserver = "gunicorn"
+
+        # fmd
+        self.levels = [-1, 0, 1, 2, 3]
+        self.db_url = 'sqlite:///fmd.db'
 
         # benchmarks
         self.benchmarks = [('pidigits', 'Compute digits of pi.')]
@@ -35,11 +38,14 @@ class Config(object):
         self.speed = parse_string(config_parser, 'run', 'speed', self.speed)
 
         # parse app
-        self.levels = parse_list(config_parser, 'app', 'levels', self.levels)
         self.url = parse_string(config_parser, 'app', 'url', self.url)
         self.port = parse_string(config_parser, 'app', 'port', self.url)
         self.protocol = parse_string(config_parser, 'app', 'protocol', self.protocol)
         self.webserver = parse_string(config_parser, 'app', 'webserver', self.webserver)
+
+        # parse fmd
+        self.levels = parse_list(config_parser, 'fmd', 'levels', self.levels)
+        self.db_url = parse_string(config_parser, 'fmd', 'db_url', self.db_url)
 
         # parse benchmarks
         self.benchmarks = parse_benchmarks(config_parser, 'benchmarks', self.benchmarks)

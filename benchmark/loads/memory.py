@@ -8,6 +8,7 @@ from benchmark import config
 PATH_LIB_LOOPS = 4 if config.speed == "fast" else 6
 PATH_LIB_NUM_FILES = 200 if config.speed == "fast" else 400
 JSON_LOOPS = 90 if config.speed == "fast" else 200
+POWERSET = 17 if config.speed == "fast" else 18
 
 
 def json_loads_bm():
@@ -25,3 +26,11 @@ def path_lib_bm():
         bm_pathlib.bench_pathlib(loops=PATH_LIB_LOOPS, tmp_path=tmp_path, num_files=PATH_LIB_NUM_FILES)
     finally:
         shutil.rmtree(tmp_path)
+
+
+def powerset_bm():
+    lst = list(range(0, POWERSET))
+    result = [[]]
+    for x in lst:
+        result.extend([subset + [x] for subset in result])
+    return result

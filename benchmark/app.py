@@ -5,16 +5,16 @@ from functools import wraps
 
 from flask import Flask, jsonify
 
-from benchmark import probe, FMD_LEVEL, LOCATION
-from benchmark.loads import cpu, memory, disk
+from benchmark import config
+from benchmark import probe, FMD_LEVEL
+from benchmark.loads import cpu, memory, disk, recursive
 
 app = Flask(__name__)
 
 if FMD_LEVEL > -1:
     print("FMD level: %d" % FMD_LEVEL)
     import flask_monitoringdashboard as dashboard
-    # TODO: make this configurable
-    db_url = 'sqlite:///' + LOCATION + '../fmd' + str(FMD_LEVEL) + '.db'
+    db_url = config.db_url
     dashboard.config.database_name = db_url
     dashboard.config.monitor_level = FMD_LEVEL
     dashboard.bind(app)
@@ -65,10 +65,22 @@ def float_endpoint():
     cpu.float_bm()
 
 
+@app.route('/fib/')
+@duration
+def fib_endpoint():
+    recursive.fibonacci_bm()
+
+
 @app.route('/json_loads/')
 @duration
 def json_loads_endpoint():
     memory.json_loads_bm()
+
+
+@app.route('/powerset/')
+@duration
+def powerset_endpoint():
+    memory.powerset_bm()
 
 
 @app.route('/path_lib/')
