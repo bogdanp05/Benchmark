@@ -8,3 +8,4 @@ performance==0.7.0                    # for getting the benchmarks
 perf==1.6.0                           # benchmarking toolkit
 gunicorn==19.9.0                      # web server
 PyMySQL==0.9.3                        # mysql driver
+locustio==0.11.0                      # for creating users of a website
