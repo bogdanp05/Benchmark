@@ -116,3 +116,7 @@ venv.bak/
 results/*
 
 io.txt
+
+
+#locust results
+*.csv
