@@ -115,3 +115,17 @@ To shut down the server, run:
 make shutdown
 ```
 
+
+## Conduit app
+
+In order to set up the Conduit app type the following commands from
+the root of the project:
+```
+cd flask_conduit
+export FLASK_APP=./autoapp.py
+export FLASK_DEBUG=1
+Flask db init
+Flask db migrate
+Flask db upgrade
+```
+

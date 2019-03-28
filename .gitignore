@@ -120,3 +120,6 @@ io.txt
 
 #locust results
 *.csv
+
+#conduit
+flask_conduit/migrations/
