@@ -14,7 +14,6 @@ def create_app(config_object=ProdConfig):
 
     :param config_object: The configuration object to use.
     """
-    print(__name__)
     app = Flask(__name__.split('.')[1])
     app.url_map.strict_slashes = False
     app.config.from_object(config_object)

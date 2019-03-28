@@ -123,7 +123,6 @@ the root of the project:
 ```
 cd flask_conduit
 export FLASK_APP=./autoapp.py
-export FLASK_DEBUG=1
 Flask db init
 Flask db migrate
 Flask db upgrade

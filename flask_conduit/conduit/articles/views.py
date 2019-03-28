@@ -116,8 +116,10 @@ def unfavorite_an_article(slug):
 @use_kwargs({'limit': fields.Int(), 'offset': fields.Int()})
 @marshal_with(articles_schema)
 def articles_feed(limit=20, offset=0):
-    return Article.query.join(current_user.profile.follows). \
-        order_by(Article.createdAt.desc()).offset(offset).limit(limit).all()
+    sub_query = current_user.profile.follows.subquery()
+    query = Article.query.join(sub_query). \
+        order_by(Article.createdAt.desc()).offset(offset).limit(limit)
+    return query.all()
 
 
 ######
