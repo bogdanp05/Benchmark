@@ -80,14 +80,14 @@ This will show a table similar to:
 Make sure to replace the files in the command above with your own.
 
 #### 3.2 Using the `visualize` (local) package
-
-To get beautiful [violin plots](https://en.wikipedia.org/wiki/Violin_plot)
-of all the benchmark results, run:
+To get plots of all the benchmarks, run:
 ```
-python -m visualize results/190308_15:53:40/
+python -m visualize results/190320_15:03:54 --type t
 ```
-
-Make sure to replace the path to the results folder with your own.
+where `t` can be:
+- `violin` for [violin plots](https://en.wikipedia.org/wiki/Violin_plot)
+- `line` for line graphs
+- `both`
 
 **OR**
 
@@ -95,7 +95,7 @@ Make sure to replace the path to the results folder with your own.
 make view
 ```
 
-to view the most recent results.
+to get violin plots of the most recent results.
 
 
 ## Clean up

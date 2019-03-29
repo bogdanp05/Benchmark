@@ -3,7 +3,7 @@ import json
 import os
 from collections import defaultdict
 
-from visualize.violin_plot import violin_plot
+from visualize.plot import violin_plot, line_plot
 
 """
 Structure of a K.json file, with K={-1,0,1,2,3}:
@@ -100,7 +100,8 @@ def build_violin_plots(args, vis_data, max_val):
 
 def build_line_plots(args, vis_data, max_val):
     print("Generating line plots of benchmark results from directory %s" % args.path)
-    pass
+    for benchmark in vis_data.keys():
+        line_plot(vis_data[benchmark], benchmark, args.path, max_val)
 
 
 def build_plots(args, vis_data):

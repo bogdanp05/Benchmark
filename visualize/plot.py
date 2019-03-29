@@ -33,4 +33,31 @@ def violin_plot(benchmark_data, benchmark_name, dir_path, max_val):
     )
 
     fig = go.Figure(data=data, layout=layout)
-    plot(fig, filename=os.path.join(dir_path, benchmark_name + '.html'))
+    plot(fig, filename=os.path.join(dir_path, benchmark_name + '_violin.html'))
+
+
+def line_plot(benchmark_data, benchmark_name, dir_path, max_val):
+    data = []
+    for k in sorted(benchmark_data.keys()):
+        trace = {
+            "type": 'scatter',
+            "x": list(range(len(benchmark_data[k]))),
+            "y": sorted(benchmark_data[k], reverse=True),
+            "mode": 'lines+markers',
+            "name": k
+        }
+        data.append(trace)
+
+    layout = go.Layout(
+        title='%s benchmark' % benchmark_name,
+        xaxis=dict(
+            title="Measurements"
+        ),
+        yaxis=dict(
+            title="response time (s)",
+            range=[0, max_val]
+        )
+    )
+
+    fig = go.Figure(data=data, layout=layout)
+    plot(fig, filename=os.path.join(dir_path, benchmark_name + '_line.html'))
