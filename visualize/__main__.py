@@ -2,13 +2,11 @@ import argparse
 import json
 import os
 from collections import defaultdict
-from pprint import pprint
 
-import plotly.graph_objs as go
-from plotly.offline import plot
+from visualize.violin_plot import violin_plot
 
 """
-Structure of a K.json file, with K=[-1,3]:
+Structure of a K.json file, with K={-1,0,1,2,3}:
 {
     benchmarks: [
                     metadata: {name: float},
@@ -25,6 +23,8 @@ Structure of a K.json file, with K=[-1,3]:
 def parse_args():
     parser = argparse.ArgumentParser(description='Visualize benchmark results')
     parser.add_argument('path', metavar='p', type=str, help='path of the results directory')
+    parser.add_argument('--type', metavar='t', type=str, default='violin',
+                        help='type of visualization. options: violin, line, or both. default: violin')
     args = parser.parse_args()
     return args
 
@@ -92,47 +92,36 @@ def get_visualization_data(full_data):
     return data
 
 
-def violin_plot(benchmark_data, benchmark_name, dir_path, max_val):
-    data = []
-    for k in sorted(benchmark_data.keys()):
-        trace = {
-            "type": 'violin',
-            "x": [k]*len(benchmark_data[k]),
-            "y": benchmark_data[k],
-            "name": k,
-            "box": {
-                "visible": True
-            },
-            "meanline": {
-                "visible": True
-            }
-        }
-        data.append(trace)
+def build_violin_plots(args, vis_data, max_val):
+    print("Generating violin plots of benchmark results from directory %s" % args.path)
+    for benchmark in vis_data.keys():
+        violin_plot(vis_data[benchmark], benchmark, args.path, max_val)
 
-    layout = go.Layout(
-        title='%s benchmark' % benchmark_name,
-        xaxis=dict(
-            title="FMD monitoring level"
-        ),
-        yaxis=dict(
-            title="response time (s)",
-            range=[0, max_val]
-        )
-    )
 
-    fig = go.Figure(data=data, layout=layout)
-    plot(fig, filename=os.path.join(dir_path, benchmark_name + '.html'))
+def build_line_plots(args, vis_data, max_val):
+    print("Generating line plots of benchmark results from directory %s" % args.path)
+    pass
+
+
+def build_plots(args, vis_data):
+    max_val = max(max(vv) for v in vis_data.values() for vv in v.values())
+    if args.type == 'line':
+        build_line_plots(args, vis_data, max_val)
+    elif args.type == 'violin':
+        build_violin_plots(args, vis_data, max_val)
+    elif args.type == 'both':
+        build_violin_plots(args, vis_data, max_val)
+        build_line_plots(args, vis_data, max_val)
+    else:
+        print("'%s' is not a valid plot type. Use 'python -m visualize --help' to see valid options." % args.type)
 
 
 def main():
-    path = parse_args().path
-    print("Violin plots of benchmark results from directory %s" % path)
-    files = get_files(path)
-    full_data = get_full_data(path, files)  # indexed by monitoring level
+    args = parse_args()
+    files = get_files(args.path)
+    full_data = get_full_data(args.path, files)  # indexed by monitoring level
     vis_data = get_visualization_data(full_data)  # indexed by benchmark name
-    max_val = max(max(vv) for v in vis_data.values() for vv in v.values())
-    for benchmark in vis_data.keys():
-        violin_plot(vis_data[benchmark], benchmark, path, max_val)
+    build_plots(args, vis_data)
 
 
 if __name__ == "__main__":
