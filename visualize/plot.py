@@ -43,7 +43,7 @@ def line_plot(benchmark_data, benchmark_name, dir_path, max_val):
             "type": 'scatter',
             "x": list(range(len(benchmark_data[k]))),
             "y": sorted(benchmark_data[k], reverse=True),
-            "mode": 'lines+markers',
+            "mode": 'lines',
             "name": k
         }
         data.append(trace)
