@@ -13,8 +13,8 @@ clear:
 	rm *.db
 
 # Remove all plots
-rm_plots:
-	rm *.html
+free_space:
+	find . -name "*.html" -type f -delete
 
 # Shutdown hanging server on port 5000 if necessary
 shutdown:
