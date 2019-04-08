@@ -5,8 +5,7 @@ from functools import wraps
 
 from flask import Flask, jsonify
 
-from micro import config
-from micro import probe, FMD_LEVEL
+from micro import probe, FMD_LEVEL, FMD_DB
 from micro.loads import cpu, memory, disk, recursive
 
 app = Flask(__name__)
@@ -14,8 +13,8 @@ app = Flask(__name__)
 if FMD_LEVEL > -1:
     print("FMD level: %d" % FMD_LEVEL)
     import flask_monitoringdashboard as dashboard
-    db_url = config.db_url
-    dashboard.config.database_name = db_url
+    if FMD_DB:
+        dashboard.config.database_name = FMD_DB
     dashboard.config.monitor_level = FMD_LEVEL
     dashboard.bind(app)
 

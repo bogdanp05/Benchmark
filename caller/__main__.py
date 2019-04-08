@@ -21,8 +21,10 @@ RESULTS_DIR = LOCATION + '../results/micro/' + START_TIME
 BENCHMARKS = config.benchmarks
 
 
-def set_flask_environment():
+def set_environment():
     os.environ["FLASK_APP"] = LOCATION + '../micro/app.py'
+    os.environ["FMD_DB"] = config.db_url
+    os.environ["BM_SPEED"] = config.speed
 
 
 def create_results_dir():
@@ -95,7 +97,7 @@ def get_file_name(monitor_level):
 
 
 def main():
-    set_flask_environment()
+    set_environment()
     create_results_dir()
     copy_config_file()
     for level in config.levels:

@@ -1,0 +1,32 @@
+from micro import BM_SPEED
+
+if BM_SPEED == "fast":
+    PI_DIGITS = 1300
+    FLOAT_POINTS = 45000
+
+    FIB = 27
+    JSON_LOOPS = 90
+    POWERSET = 17
+    PATH_LIB_NUM_FILES = 200
+    PATH_LIB_LOOPS = 4
+
+    SQL_LOOPS = 2
+    SQL_WRITES = 5
+    SQL_READS = 50
+    FILE_WRITES = 350
+    FILE_READS = 2000
+else:
+    PI_DIGITS = 2000
+    FLOAT_POINTS = 100000
+
+    FIB = 28
+    JSON_LOOPS = 200
+    POWERSET = 18
+    PATH_LIB_NUM_FILES = 400
+    PATH_LIB_LOOPS = 6
+
+    SQL_LOOPS = 3
+    SQL_WRITES = 7
+    SQL_READS = 70
+    FILE_WRITES = 700
+    FILE_READS = 3500

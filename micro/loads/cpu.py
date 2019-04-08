@@ -1,13 +1,10 @@
 from performance.benchmarks import bm_pidigits, bm_float
-from micro import config
-
-DIGITS = 1300 if config.speed == "fast" else 2000
-POINTS = 45000 if config.speed == "fast" else 100000
+from micro.loads import PI_DIGITS, FLOAT_POINTS
 
 
 def pi_digits_bm():
-    bm_pidigits.calc_ndigits(DIGITS)
+    bm_pidigits.calc_ndigits(PI_DIGITS)
 
 
 def float_bm():
-    bm_float.benchmark(POINTS)
+    bm_float.benchmark(FLOAT_POINTS)
