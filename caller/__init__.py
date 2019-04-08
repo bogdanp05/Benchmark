@@ -1,5 +1,5 @@
 import os
-from config import Config
+from caller.config import Config
 
 LOCATION = os.path.abspath(os.path.dirname(__file__)) + '/'
 
