@@ -1,19 +1,7 @@
 # Benchmark
 Framework for measuring the overhead of [Flask Monitoring Dashboard](https://github.com/flask-dashboard/Flask-MonitoringDashboard)
-on a monitored application.
+on the monitored Flask application.
 
-
-## Structure
-The repository contains two applications: **benchmark** and **caller**.
-
-### benchmark
-Flask web application containing cpu, memory, and database intensive endpoints.
-After executing, it returns the response times and the system probe
-information.
-
-### caller
-Python application calling the defined in **benchmark** and logging and storing
-the response time and system probe parameters in a database.
 
 
 ## How to run
@@ -38,13 +26,29 @@ pip install -r requirements.txt
 
 **Make sure to define the hyper parameters in the `config.ini` file.**
 
-To run the benchmarks, go in the root of the project and run:
+
+#### 2.1. Micro benchmarks
+To run the micro benchmarks, go in the root of the project and run:
 ```
 make run
 ```
 
-
 The results are saved into json files, in the `/results` folder.
+
+#### 2.2. Macro benchmark
+The macro benchmark consists of a real world Flask application, 
+[Conduit](https://github.com/gothinkster/flask-realworld-example-app).
+To set up the Conduit app type the following commands from
+the root of the project:
+```
+cd flask_conduit
+export FLASK_APP=./autoapp.py
+Flask db init
+Flask db migrate
+Flask db upgrade
+```
+
+TODO
 
 
 ### 3. Visualize results
@@ -55,7 +59,7 @@ are 2 ways of viewing them:
 
 From the root run:
 ```
-python -m perf compare_to results/190308_15:25:37/-1.json results/190308_15:25:37/3.json --table
+python -m perf compare_to results/micro/190308_15:25:37/-1.json results/micro/190308_15:25:37/3.json --table
 ```
 This will show a table similar to:
 ```
@@ -79,10 +83,10 @@ This will show a table similar to:
 ```
 Make sure to replace the files in the command above with your own.
 
-#### 3.2 Using the `visualize` (local) package
+#### 3.2 Using the `viewer` (local) package
 To get plots of all the benchmarks, run:
 ```
-python -m visualize results/190320_15:03:54 --type t
+python -m viewer results/micro/190320_15:03:54 --type t
 ```
 where `t` can be:
 - `violin` for [violin plots](https://en.wikipedia.org/wiki/Violin_plot)
@@ -106,7 +110,7 @@ make clear
 
 To remove all the `html` files containing the plots, run:
 ```
-make rm_plots
+make free_space
 ```
 
 If there's a failure, the server will not shutdown and port 5000 is unusable.
@@ -115,16 +119,4 @@ To shut down the server, run:
 make shutdown
 ```
 
-
-## Conduit app
-
-In order to set up the Conduit app type the following commands from
-the root of the project:
-```
-cd flask_conduit
-export FLASK_APP=./autoapp.py
-Flask db init
-Flask db migrate
-Flask db upgrade
-```
 

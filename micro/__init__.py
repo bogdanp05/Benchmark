@@ -1,0 +1,80 @@
+import os
+from contextlib import contextmanager
+
+from sqlalchemy import Column, ForeignKey, Integer, String, exc
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship, sessionmaker, scoped_session
+from caller.config import Config
+
+"""
+FMD level and location configuration
+"""
+FMD_LEVEL = int(os.environ["FMD_LEVEL"]) if "FMD_LEVEL" in os.environ else -1
+LOCATION = os.path.abspath(os.path.dirname(__file__)) + '/'
+
+"""
+Settings from the config file
+"""
+config = Config()
+config.init_from(file=LOCATION + '../config.ini')
+
+"""
+Declarative db configuration
+"""
+Base = declarative_base()
+
+
+class PersonDeclarative(Base):
+    __tablename__ = 'person'
+    # Here we define columns for the table person
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+
+
+class AddressDeclarative(Base):
+    __tablename__ = 'address'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    street_name = Column(String(250))
+    street_number = Column(String(250))
+    post_code = Column(String(250), nullable=False)
+    person_id = Column(Integer, ForeignKey('person.id'))
+    person = relationship(PersonDeclarative)
+
+
+# Create an engine that stores data in the local directory's
+# declarative.db file.
+engine = create_engine('sqlite:///declarative.db')
+
+# Create all tables in the engine. This is equivalent to "Create Table"
+# statements in raw SQL.
+Base.metadata.create_all(engine)
+
+# Bind the engine to the metadata of the Base class so that the
+# declaratives can be accessed through a DBSession instance
+Base.metadata.bind = engine
+
+DBSession = sessionmaker(bind=engine)
+
+
+@contextmanager
+def session_scope():
+    """
+    When accessing the database, use the following syntax:
+        with session_scope() as db_session:
+            db_session.query(...)
+
+    :return: the session for accessing the database
+    """
+    session_obj = scoped_session(DBSession)
+    session = session_obj()
+    try:
+        yield session
+        session.commit()
+    except exc.OperationalError:
+        session.rollback()
+    finally:
+        session.close()

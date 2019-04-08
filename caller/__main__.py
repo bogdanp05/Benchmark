@@ -17,12 +17,12 @@ from caller import config, LOCATION
 APP_PATH = config.protocol + '://' + config.url + ':' + config.port + '/'
 APP_OUTPUT = LOCATION + '../output.log'
 START_TIME = datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")
-RESULTS_DIR = LOCATION + '../results/' + START_TIME
+RESULTS_DIR = LOCATION + '../results/micro/' + START_TIME
 BENCHMARKS = config.benchmarks
 
 
 def set_flask_environment():
-    os.environ["FLASK_APP"] = LOCATION + '../benchmark/app.py'
+    os.environ["FLASK_APP"] = LOCATION + '../micro/app.py'
 
 
 def create_results_dir():
@@ -39,7 +39,7 @@ def start_app(fmd_level, webserver):
     if webserver == 'werkzeug':
         command.extend(["flask", "run", "-p", config.port])
     else:
-        command.extend(["gunicorn", "-w", "1", "-b", config.url + ':' + config.port, "benchmark.app:app"])
+        command.extend(["gunicorn", "-w", "1", "-b", config.url + ':' + config.port, "micro.app:app"])
 
     with open(APP_OUTPUT, 'a') as f:
         server_process = subprocess.Popen(command, stdout=f)
@@ -90,7 +90,7 @@ def run_perf_script(level):
 
 
 def get_file_name(monitor_level):
-    filename = LOCATION + '../results/' + START_TIME + '/' + str(monitor_level) + '.json'
+    filename = RESULTS_DIR + '/' + str(monitor_level) + '.json'
     return filename
 
 

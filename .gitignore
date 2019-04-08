@@ -122,4 +122,4 @@ io.txt
 *.csv
 
 #conduit
-flask_conduit/migrations/
+macro/migrations/
