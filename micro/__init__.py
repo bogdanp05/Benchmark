@@ -41,8 +41,8 @@ class AddressDeclarative(Base):
 
 
 # Create an engine that stores data in the local directory's
-# declarative.db file.
-engine = create_engine('sqlite:///declarative.db')
+# micro.db file.
+engine = create_engine('sqlite:///micro.db')
 
 # Create all tables in the engine. This is equivalent to "Create Table"
 # statements in raw SQL.

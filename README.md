@@ -41,7 +41,7 @@ The macro benchmark consists of a real world Flask application,
 To set up the Conduit app type the following commands from
 the root of the project:
 ```
-cd flask_conduit
+cd macro
 export FLASK_APP=./autoapp.py
 Flask db init
 Flask db migrate
