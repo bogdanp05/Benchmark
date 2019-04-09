@@ -1,8 +1,12 @@
 last_results = $(addsuffix $(shell ls results/micro | sort -r | head -1), results/micro/)
 
-# Run the benchmarks
-run:
-	python -m caller
+# Run the micro benchmarks
+run_micro:
+	python -m caller --type micro
+
+# Run the macro benchmarks
+run_macro:
+	python -m caller --type macro
 
 # View the last results
 view:

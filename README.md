@@ -30,10 +30,10 @@ pip install -r requirements.txt
 #### 2.1. Micro benchmarks
 To run the micro benchmarks, go in the root of the project and run:
 ```
-make run
+make run_micro
 ```
 
-The results are saved into json files, in the `/results` folder.
+The results are saved into json files, in the `/results/micro` folder.
 
 #### 2.2. Macro benchmark
 The macro benchmark consists of a real world Flask application, 
@@ -47,6 +47,13 @@ Flask db init
 Flask db migrate
 Flask db upgrade
 ```
+
+To run the macro benchmarks, go in the root of the project and run:
+```
+make run_macro
+```
+
+The results are saved into json files, in the `/results/macro` folder.
 
 TODO
 
