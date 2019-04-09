@@ -58,6 +58,10 @@ class ConfigMacro(object):
         """
         # app
         self.db = 'sqlite:///macro.db'
+        self.url = "127.0.0.1"
+        self.port = "5000"
+        self.protocol = "http"
+        self.webserver = "gunicorn"
 
     def init_from(self, file=None):
         config_parser = configparser.RawConfigParser()
@@ -65,3 +69,7 @@ class ConfigMacro(object):
 
         # parse app
         self.db = parse_string(config_parser, 'app', 'db', self.db)
+        self.url = parse_string(config_parser, 'app', 'url', self.url)
+        self.port = parse_string(config_parser, 'app', 'port', self.port)
+        self.protocol = parse_string(config_parser, 'app', 'protocol', self.protocol)
+        self.webserver = parse_string(config_parser, 'app', 'webserver', self.webserver)

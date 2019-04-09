@@ -16,12 +16,6 @@ def create_results_dir(results_dir, config_file):
     shutil.copy2(config_file, results_dir)
 
 
-def set_environment(flask_app, fmd_db=None, bm_speed=None):
-    os.environ["FLASK_APP"] = LOCATION + '../' + flask_app
-    os.environ["FMD_DB"] = fmd_db
-    os.environ["BM_SPEED"] = bm_speed
-
-
 def drop_tables(db_url):
     try:
         engine = create_engine(db_url)
@@ -34,13 +28,15 @@ def drop_tables(db_url):
         sys.exit(1)
 
 
-def start_app(fmd_level, webserver, port, url):
+def start_app(fmd_level, webserver, port, url, app=None):
     os.environ["FMD_LEVEL"] = str(fmd_level)
     command = []
     if webserver == 'werkzeug':
         command.extend(["flask", "run", "-p", port])
     else:
-        command.extend(["gunicorn", "-w", "1", "-b", url + ':' + port, "micro.app:app"])
+        if not app:
+            print("No app file given")
+        command.extend(["gunicorn", "-w", "1", "-b", url + ':' + port, app])
 
     with open(APP_OUTPUT, 'a') as f:
         server_process = subprocess.Popen(command, stdout=f)
