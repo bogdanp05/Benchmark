@@ -7,11 +7,17 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Visualize micro results')
     parser.add_argument('--type', metavar='t', type=str, default='micro',
                         help='type of visualization. options: micro, macro, or both. default: micro')
+    parser.add_argument('--load', metavar='l',  type=lambda x: (str(x).lower() in ['true', '1', 'yes', 'y']),
+                        default=False, help='Generate load. options: true, false. default: false')
     args = parser.parse_args()
     return args
 
 
 def run_benchmarks(args):
+    if args.load:
+        print("Generating load")
+        macro.create_load()
+        return
     if args.type == 'micro':
         micro.run()
     elif args.type == 'macro':

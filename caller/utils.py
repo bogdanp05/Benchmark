@@ -28,7 +28,7 @@ def drop_tables(db_url):
         sys.exit(1)
 
 
-def start_app(fmd_level, webserver, port, url, app=None):
+def start_app(fmd_level, webserver, port, url, app=None, log=False):
     os.environ["FMD_LEVEL"] = str(fmd_level)
     command = []
     if webserver == 'werkzeug':
@@ -36,7 +36,10 @@ def start_app(fmd_level, webserver, port, url, app=None):
     else:
         if not app:
             print("No app file given")
+            return
         command.extend(["gunicorn", "-w", "1", "-b", url + ':' + port, app])
+        if log:
+            command.extend(["--log-level", "debug"])
 
     with open(APP_OUTPUT, 'a') as f:
         server_process = subprocess.Popen(command, stdout=f)
