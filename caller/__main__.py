@@ -1,6 +1,6 @@
 import argparse
 
-from caller import micro, macro
+from caller import micro, macro, macro_load
 
 
 def parse_args():
@@ -16,7 +16,7 @@ def parse_args():
 def run_benchmarks(args):
     if args.load:
         print("Generating load")
-        macro.create_load()
+        macro_load.create_load()
         return
     if args.type == 'micro':
         micro.run()
