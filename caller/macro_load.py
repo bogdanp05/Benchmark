@@ -1,4 +1,5 @@
 import json
+import random
 import time
 
 import requests
@@ -6,13 +7,15 @@ import requests
 from caller import utils, config_macro
 from caller.macro import set_environment, APP_PATH
 
-HEADERS = {'content-type': 'application/json'}
-USERS = 10
+USER_NUMBER = 10
 USER_PREFIX = 'user'
 PASSWORD = 'user'
-ARTICLES = 10  # articles per user
+ARTICLE_USER = 10  # articles per user
 ARTICLE_SIZE = 100  # in KB
-
+TITLE = 'Title'
+DESCRIPTION = 'A short description of the article'
+TAG = 'tag'
+TAG_ARTICLE = 3  # tags per article
 # 1 KB text
 LOREM_IPSUM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin gravida facilisis mauris id tincidunt. " \
               "Phasellus eget turpis magna. Fusce tempus ullamcorper felis in pretium. Fusce viverra velit non odio " \
@@ -29,20 +32,25 @@ LOREM_IPSUM = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin gr
 
 class User(object):
     def __init__(self, index):
+        self.index = index
         self.username = USER_PREFIX + str(index)
         self.email = self.username + '@user.com'
         self.password = PASSWORD
-        self.auth_headers = None
+        self.headers = {'content-type': 'application/json'}
 
     def register(self):
         payload = {'user': {'username': self.username, 'email': self.email, 'password': self.password}}
-        response = requests.post(APP_PATH + '/users/', data=json.dumps(payload), headers=HEADERS)
-        self.auth_headers = {'authorization': 'Token %s' % response.json()['user']['token']}
+        response = requests.post(APP_PATH + '/users/', data=json.dumps(payload), headers=self.headers)
+        self.headers['authorization'] = 'Token %s' % response.json()['user']['token']
+
+    def create_article(self, title, description, article, tags):
+        payload = {'article': {'title': title, 'description': description, 'body': article, 'tagList': tags}}
+        requests.post(APP_PATH + '/articles/', data=json.dumps(payload), headers=self.headers)
 
 
 def create_users():
     users = []
-    for i in range(USERS):
+    for i in range(USER_NUMBER):
         user = User(i)
         user.register()
         users.append(user)
@@ -56,11 +64,19 @@ def get_article():
     return article
 
 
-def create_articles():
+def get_tags():
+    return [TAG + str(i) for i in range(USER_NUMBER * ARTICLE_USER)]
+
+
+def create_articles(users):
     article = get_article()
-    print(article)
-    for u in range(USERS):
-        pass
+    tags = get_tags()
+    print(tags)
+    for u in users:
+        for i in range(ARTICLE_USER):
+            selected_tags = random.sample(population=tags, k=TAG_ARTICLE)
+            u.create_article(title=TITLE + '_%d_%d' % (u.index, i), description=DESCRIPTION,
+                             article=article, tags=selected_tags)
 
 
 def create_load():
@@ -71,6 +87,5 @@ def create_load():
                                  config_macro.url, 'macro.autoapp:app', log=True)
     time.sleep(5)
     users = create_users()
-    print(users)
-    # create_articles()
+    create_articles(users)
     utils.stop_app(server_pid)
