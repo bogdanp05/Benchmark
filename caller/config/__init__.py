@@ -3,10 +3,10 @@ import configparser
 from caller.config.parser import parse_literal, parse_string, parse_list, parse_benchmarks
 
 
-class Config(object):
+class ConfigMicro(object):
     def __init__(self):
         """
-            Sets the default values for the project
+            Sets the default values for the micro benchmarks
         """
         # run
         self.values = 5
@@ -39,7 +39,7 @@ class Config(object):
 
         # parse app
         self.url = parse_string(config_parser, 'app', 'url', self.url)
-        self.port = parse_string(config_parser, 'app', 'port', self.url)
+        self.port = parse_string(config_parser, 'app', 'port', self.port)
         self.protocol = parse_string(config_parser, 'app', 'protocol', self.protocol)
         self.webserver = parse_string(config_parser, 'app', 'webserver', self.webserver)
 
@@ -49,3 +49,27 @@ class Config(object):
 
         # parse benchmarks
         self.benchmarks = parse_benchmarks(config_parser, 'benchmarks', self.benchmarks)
+
+
+class ConfigMacro(object):
+    def __init__(self):
+        """
+            Sets the default values for the macro benchmark
+        """
+        # app
+        self.db = 'sqlite:///macro.db'
+        self.url = "127.0.0.1"
+        self.port = "5000"
+        self.protocol = "http"
+        self.webserver = "gunicorn"
+
+    def init_from(self, file=None):
+        config_parser = configparser.RawConfigParser()
+        config_parser.read(file)
+
+        # parse app
+        self.db = parse_string(config_parser, 'app', 'db', self.db)
+        self.url = parse_string(config_parser, 'app', 'url', self.url)
+        self.port = parse_string(config_parser, 'app', 'port', self.port)
+        self.protocol = parse_string(config_parser, 'app', 'protocol', self.protocol)
+        self.webserver = parse_string(config_parser, 'app', 'webserver', self.webserver)

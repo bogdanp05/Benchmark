@@ -23,8 +23,10 @@ class Config(object):
         'http://localhost:8000',
         'http://0.0.0.0:4200',
         'http://localhost:4200',
+        'http://127.0.0.1:4200',
         'http://0.0.0.0:4000',
         'http://localhost:4000',
+        'http://localhost:5000',
     ]
     JWT_HEADER_TYPE = 'Token'
 
@@ -43,10 +45,11 @@ class DevConfig(Config):
 
     ENV = 'dev'
     DEBUG = True
-    DB_NAME = 'dev.db'
-    # Put the db file in project root
-    DB_PATH = os.path.join(Config.PROJECT_ROOT, DB_NAME)
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///{0}'.format(DB_PATH)
+    # DB_NAME = 'macro.db'
+    # # Put the db file in project root
+    # DB_PATH = os.path.join(Config.PROJECT_ROOT, DB_NAME)
+    # SQLALCHEMY_DATABASE_URI = 'sqlite:///{0}'.format(DB_PATH)
+    SQLALCHEMY_DATABASE_URI = os.environ.get('MACRO_DB', 'sqlite:///macro.db')
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(10 ** 6)
 

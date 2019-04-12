@@ -1,6 +1,4 @@
-from micro import config
-
-FIB = 27 if config.speed == "fast" else 28
+from micro.loads import FIB
 
 
 def fibonacci_bm():

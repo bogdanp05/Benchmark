@@ -1,13 +1,7 @@
 from micro.loads.ported_benchmarks import bm_sqlalchemy
-from micro import config
+from micro.loads import SQL_WRITES, SQL_READS, FILE_WRITES, FILE_READS, SQL_COMBINED
 import os
 
-# TODO: make this configurable
-LOOPS = 2 if config.speed == 'fast' else 3
-WRITES = 5 if config.speed == 'fast' else 7
-READS = 50 if config.speed == 'fast' else 70
-FILE_WRITES = 350 if config.speed == 'fast' else 700
-FILE_READS = 2000 if config.speed == 'fast' else 3500
 TEXT = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et " \
        "dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip " \
        "ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu " \
@@ -17,15 +11,15 @@ FILE_NAME = 'io.txt'
 
 
 def sql_combined_bm():
-    bm_sqlalchemy.bench_sqlalchemy_combined(loops=LOOPS, writes=WRITES, reads=READS)
+    bm_sqlalchemy.bench_sqlalchemy(loops=SQL_COMBINED, writes=2, reads=19)
 
 
 def sql_writes():
-    bm_sqlalchemy.bench_sqlalchemy_combined(loops=LOOPS*2, writes=WRITES, reads=0)
+    bm_sqlalchemy.bench_sqlalchemy(loops=SQL_WRITES, writes=6, reads=0)
 
 
 def sql_reads():
-    bm_sqlalchemy.bench_sqlalchemy_combined(loops=LOOPS, writes=0, reads=READS*2)
+    bm_sqlalchemy.bench_sqlalchemy(loops=SQL_READS, writes=0, reads=35)
 
 
 def write_file():

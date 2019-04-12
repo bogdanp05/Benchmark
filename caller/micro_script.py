@@ -6,12 +6,14 @@ import requests
 
 LOCATION = os.path.abspath(os.path.dirname(__file__)) + '/'
 config = configparser.ConfigParser()
-config.read(LOCATION + '../config.ini')
+config.read(LOCATION + '../config_micro.ini')
 
 bm_info = configparser.ConfigParser()
 bm_info.read(LOCATION + '../bm_info.ini')
 
-APP_PATH = config['app']['protocol'] + '://' + config['app']['url'] + ':' + config['app']['port'] + '/'
+APP_PATH = config['app']['protocol'] + '://' +\
+           config['app']['url'] + ':' +\
+           config['app']['port'] + '/'
 
 
 def call_endpoint(endpoint):

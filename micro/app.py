@@ -5,8 +5,7 @@ from functools import wraps
 
 from flask import Flask, jsonify
 
-from micro import config
-from micro import probe, FMD_LEVEL
+from micro import probe, FMD_LEVEL, FMD_DB
 from micro.loads import cpu, memory, disk, recursive
 
 app = Flask(__name__)
@@ -14,8 +13,8 @@ app = Flask(__name__)
 if FMD_LEVEL > -1:
     print("FMD level: %d" % FMD_LEVEL)
     import flask_monitoringdashboard as dashboard
-    db_url = config.db_url
-    dashboard.config.database_name = db_url
+    if FMD_DB:
+        dashboard.config.database_name = FMD_DB
     dashboard.config.monitor_level = FMD_LEVEL
     dashboard.bind(app)
 
@@ -65,6 +64,12 @@ def float_endpoint():
     cpu.float_bm()
 
 
+@app.route('/nbody/')
+@duration
+def nbody_endpoint():
+    cpu.nbody_bm()
+
+
 @app.route('/fib/')
 @duration
 def fib_endpoint():
@@ -75,6 +80,12 @@ def fib_endpoint():
 @duration
 def json_loads_endpoint():
     memory.json_loads_bm()
+
+
+@app.route('/list/')
+@duration
+def list_endpoint():
+    memory.lists_bm()
 
 
 @app.route('/powerset/')
@@ -105,6 +116,12 @@ def sql_writes_endpoint():
 @duration
 def sql_reads_endpoint():
     disk.sql_reads()
+
+
+@app.route('/zero/')
+@duration
+def zero_endpoint():
+    pass
 
 
 @app.route('/file_writes/')
