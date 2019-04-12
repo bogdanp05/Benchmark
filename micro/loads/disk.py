@@ -11,15 +11,15 @@ FILE_NAME = 'io.txt'
 
 
 def sql_combined_bm():
-    bm_sqlalchemy.bench_sqlalchemy(loops=SQL_COMBINED, writes=2, reads=17)
+    bm_sqlalchemy.bench_sqlalchemy(loops=SQL_COMBINED, writes=2, reads=19)
 
 
 def sql_writes():
-    bm_sqlalchemy.bench_sqlalchemy(loops=SQL_WRITES, writes=5, reads=0)
+    bm_sqlalchemy.bench_sqlalchemy(loops=SQL_WRITES, writes=6, reads=0)
 
 
 def sql_reads():
-    bm_sqlalchemy.bench_sqlalchemy(loops=SQL_READS, writes=0, reads=30)
+    bm_sqlalchemy.bench_sqlalchemy(loops=SQL_READS, writes=0, reads=35)
 
 
 def write_file():
