@@ -64,6 +64,12 @@ def float_endpoint():
     cpu.float_bm()
 
 
+@app.route('/nbody/')
+@duration
+def nbody_endpoint():
+    cpu.nbody_bm()
+
+
 @app.route('/fib/')
 @duration
 def fib_endpoint():
@@ -74,6 +80,12 @@ def fib_endpoint():
 @duration
 def json_loads_endpoint():
     memory.json_loads_bm()
+
+
+@app.route('/memsql/')
+@duration
+def memsql_endpoint():
+    memory.sqlmem_bm()
 
 
 @app.route('/powerset/')
@@ -104,6 +116,12 @@ def sql_writes_endpoint():
 @duration
 def sql_reads_endpoint():
     disk.sql_reads()
+
+
+@app.route('/zero/')
+@duration
+def zero_endpoint():
+    pass
 
 
 @app.route('/file_writes/')
