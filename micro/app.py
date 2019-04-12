@@ -82,10 +82,10 @@ def json_loads_endpoint():
     memory.json_loads_bm()
 
 
-@app.route('/memsql/')
+@app.route('/list/')
 @duration
-def memsql_endpoint():
-    memory.sqlmem_bm()
+def list_endpoint():
+    memory.lists_bm()
 
 
 @app.route('/powerset/')

@@ -2,8 +2,9 @@ import json
 import shutil
 
 from performance.benchmarks import bm_json_loads
-from micro.loads.ported_benchmarks import bm_pathlib, bm_sqlalchemy
-from micro.loads import JSON_LOOPS, POWERSET, PATH_LIB_NUM_FILES, PATH_LIB_LOOPS, MEMSQL_LOOPS
+
+from micro.loads import JSON_LOOPS, POWERSET, PATH_LIB_NUM_FILES, PATH_LIB_LOOPS, LIST_LOOPS
+from micro.loads.ported_benchmarks import bm_pathlib
 
 
 def json_loads_bm():
@@ -15,16 +16,20 @@ def json_loads_bm():
         bm_json_loads.bench_json_loads(objs)
 
 
+def lists_bm():
+    for _ in range(LIST_LOOPS):
+        lst = []
+        for j in range(1000):
+            lst.append(j)
+            lst.insert(0, -j)
+
+
 def powerset_bm():
     lst = list(range(0, POWERSET))
     result = [[]]
     for x in lst:
         result.extend([subset + [x] for subset in result])
     return result
-
-
-def sqlmem_bm():
-    bm_sqlalchemy.bench_sqlalchemy2(loops=MEMSQL_LOOPS)
 
 
 def path_lib_bm():
