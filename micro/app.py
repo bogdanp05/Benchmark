@@ -119,9 +119,8 @@ def sql_reads_endpoint():
 
 
 @app.route('/zero/')
-@duration
 def zero_endpoint():
-    pass
+    return 'OK'
 
 
 @app.route('/file_writes/')

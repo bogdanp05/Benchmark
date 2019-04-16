@@ -12,10 +12,6 @@ run_macro:
 view:
 	python -m viewer $(last_results)
 
-# Remove all databases created during the benchmarks
-clear:
-	rm *.db
-
 # Remove all plots
 free_space:
 	find . -name "*.html" -type f -delete

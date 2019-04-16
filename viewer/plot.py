@@ -4,6 +4,9 @@ import plotly.graph_objs as go
 from plotly.offline import plot
 
 
+FONT = dict(size=18)
+
+
 def violin_plot(benchmark_data, benchmark_name, dir_path, max_val):
     data = []
     for k in sorted(benchmark_data.keys()):
@@ -22,14 +25,15 @@ def violin_plot(benchmark_data, benchmark_name, dir_path, max_val):
         data.append(trace)
 
     layout = go.Layout(
-        title='%s micro' % benchmark_name,
+        title='%s benchmark' % benchmark_name,
         xaxis=dict(
             title="FMD monitoring level"
         ),
         yaxis=dict(
             title="response time (s)",
             range=[0, max_val]
-        )
+        ),
+        font=FONT
     )
 
     fig = go.Figure(data=data, layout=layout)
@@ -49,14 +53,15 @@ def line_plot(benchmark_data, benchmark_name, dir_path, max_val):
         data.append(trace)
 
     layout = go.Layout(
-        title='%s micro' % benchmark_name,
+        title='%s benchmark' % benchmark_name,
         xaxis=dict(
             title="Measurements"
         ),
         yaxis=dict(
             title="response time (s)",
             range=[0, max_val]
-        )
+        ),
+        font=FONT
     )
 
     fig = go.Figure(data=data, layout=layout)
