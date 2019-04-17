@@ -5,7 +5,7 @@ from collections import defaultdict
 from math import sqrt
 from pprint import pprint
 
-from viewer.plot import violin_plot, line_plot
+from viewer.plot import violin_plot, line_plot, overhead_plot
 
 """
 Structure of a K.json file, with K={-1,0,1,2,3}:
@@ -120,34 +120,39 @@ def build_plots(args, vis_data):
         print("'%s' is not a valid plot type. Use 'python -m viewer --help' to see valid options." % args.type)
 
 
-def get_stats(vis_data):
+def get_stats(full_stats, vis_data):
     """
     :param vis_data: data of the form:
         {
             benchmark_name: { monitoring level: [runs]}
         }
-    :return: dict of the form:
-    {
-        benchmark_name: { monitoring level: {mean, std}}
-    }
+    :param full_stats: empty dict OR dict of the form:
+        {
+            benchmark_name: { monitoring level: [{mean, std}]}
+        }
     """
-    data = {}
     for bm in vis_data.keys():
-        data[bm] = {}
+        if bm not in full_stats.keys():
+            full_stats[bm] = {}
         for ml in vis_data[bm].keys():
             runs = vis_data[bm][ml]
             mean = sum(runs)/len(runs)
             std = sqrt(sum((r - mean) ** 2 for r in runs) / len(runs))
-            data[bm][ml] = {'mean': mean, 'std': std}
-    pprint(data)
+            if ml not in full_stats[bm]:
+                full_stats[bm][ml] = []
+            full_stats[bm][ml].append({'mean': mean, 'std': std})
 
 
-def get_multiple_measurements(result_dirs):
+def get_multiple_measurements(result_dirs, dir_path):
+    full_stats = {}
     for rd in result_dirs:
         files = get_files(rd)
         full_data = get_full_data(rd, files)
         vis_data = get_visualization_data(full_data)
-        get_stats(vis_data)
+        get_stats(full_stats, vis_data)
+    pprint(full_stats)
+    for bm in full_stats.keys():
+        overhead_plot(full_stats[bm], bm, dir_path)
 
 
 def main():
@@ -158,7 +163,7 @@ def main():
         vis_data = get_visualization_data(full_data)  # indexed by micro name
         build_plots(args, vis_data)
     elif args.results:
-        get_multiple_measurements(args.results)
+        get_multiple_measurements(args.results, args.results[0])
     else:
         print('No results directory was specified.')
 
