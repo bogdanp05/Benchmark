@@ -22,7 +22,8 @@ Structure of a K.json file, with K={-1,0,1,2,3}:
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Visualize micro results')
-    parser.add_argument('path', metavar='p', type=str, help='path of the results directory')
+    parser.add_argument('--results', metavar='r', nargs='+', help='paths of the results directories')
+    parser.add_argument('--path', metavar='p', type=str, help='path of the results directory')
     parser.add_argument('--type', metavar='t', type=str, default='violin',
                         help='type of visualization. options: violin, line, or both. default: violin')
     args = parser.parse_args()
@@ -119,10 +120,15 @@ def build_plots(args, vis_data):
 
 def main():
     args = parse_args()
-    files = get_files(args.path)
-    full_data = get_full_data(args.path, files)  # indexed by monitoring level
-    vis_data = get_visualization_data(full_data)  # indexed by micro name
-    build_plots(args, vis_data)
+    if args.path:
+        files = get_files(args.path)
+        full_data = get_full_data(args.path, files)  # indexed by monitoring level
+        vis_data = get_visualization_data(full_data)  # indexed by micro name
+        build_plots(args, vis_data)
+    elif args.results:
+        pass
+    else:
+        print('No results directory was specified.')
 
 
 if __name__ == "__main__":
