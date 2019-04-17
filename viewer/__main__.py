@@ -2,6 +2,8 @@ import argparse
 import json
 import os
 from collections import defaultdict
+from math import sqrt
+from pprint import pprint
 
 from viewer.plot import violin_plot, line_plot
 
@@ -118,6 +120,36 @@ def build_plots(args, vis_data):
         print("'%s' is not a valid plot type. Use 'python -m viewer --help' to see valid options." % args.type)
 
 
+def get_stats(vis_data):
+    """
+    :param vis_data: data of the form:
+        {
+            benchmark_name: { monitoring level: [runs]}
+        }
+    :return: dict of the form:
+    {
+        benchmark_name: { monitoring level: {mean, std}}
+    }
+    """
+    data = {}
+    for bm in vis_data.keys():
+        data[bm] = {}
+        for ml in vis_data[bm].keys():
+            runs = vis_data[bm][ml]
+            mean = sum(runs)/len(runs)
+            std = sqrt(sum((r - mean) ** 2 for r in runs) / len(runs))
+            data[bm][ml] = {'mean': mean, 'std': std}
+    pprint(data)
+
+
+def get_multiple_measurements(result_dirs):
+    for rd in result_dirs:
+        files = get_files(rd)
+        full_data = get_full_data(rd, files)
+        vis_data = get_visualization_data(full_data)
+        get_stats(vis_data)
+
+
 def main():
     args = parse_args()
     if args.path:
@@ -126,7 +158,7 @@ def main():
         vis_data = get_visualization_data(full_data)  # indexed by micro name
         build_plots(args, vis_data)
     elif args.results:
-        pass
+        get_multiple_measurements(args.results)
     else:
         print('No results directory was specified.')
 
