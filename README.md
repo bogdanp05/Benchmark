@@ -91,22 +91,30 @@ This will show a table similar to:
 Make sure to replace the files in the command above with your own.
 
 #### 3.2 Using the `viewer` (local) package
-To get plots of all the benchmarks, run:
+To get plots of all the benchmarks, type:
 ```
-python -m viewer results/micro/190320_15:03:54 --type t
+python -m viewer --path results/micro/190415_16:25:30 --type t
 ```
 where `t` can be:
 - `violin` for [violin plots](https://en.wikipedia.org/wiki/Violin_plot)
 - `line` for line graphs
 - `both`
 
-**OR**
+To get line charts of the overheads, give a list of results directories
+to the `--path` argument, as shown below:
+
+```
+python -m viewer --path results/micro/190415_16:25:30 results/micro/190415_13:06:04
+```
+
+
+To get violin plots of the most recent results, type:
 
 ```
 make view
 ```
 
-to get violin plots of the most recent results.
+
 
 
 ## Clean up
