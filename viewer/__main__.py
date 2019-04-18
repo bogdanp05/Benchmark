@@ -3,7 +3,6 @@ import json
 import os
 from collections import defaultdict
 from math import sqrt
-from pprint import pprint
 
 from viewer.plot import violin_plot, line_plot, overhead_plot
 
@@ -24,8 +23,8 @@ Structure of a K.json file, with K={-1,0,1,2,3}:
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Visualize micro results')
-    parser.add_argument('--results', metavar='r', nargs='+', help='paths of the results directories')
-    parser.add_argument('--path', metavar='p', type=str, help='path of the results directory')
+    parser.add_argument('--path', metavar='p', nargs='+', help='paths of the results directories')
+    # parser.add_argument('--path', metavar='p', type=str, help='path of the results directory')
     parser.add_argument('--type', metavar='t', type=str, default='violin',
                         help='type of visualization. options: violin, line, or both. default: violin')
     args = parser.parse_args()
@@ -95,29 +94,29 @@ def get_visualization_data(full_data):
     return data
 
 
-def build_violin_plots(args, vis_data, max_val):
-    print("Generating violin plots of micro results from directory %s" % args.path)
+def build_violin_plots(path, vis_data, max_val):
+    print("Generating violin plots of micro results from directory %s" % path)
     for benchmark in vis_data.keys():
-        violin_plot(vis_data[benchmark], benchmark, args.path, max_val)
+        violin_plot(vis_data[benchmark], benchmark, path, max_val)
 
 
-def build_line_plots(args, vis_data, max_val):
-    print("Generating line plots of micro results from directory %s" % args.path)
+def build_line_plots(path, vis_data, max_val):
+    print("Generating line plots of micro results from directory %s" % path)
     for benchmark in vis_data.keys():
-        line_plot(vis_data[benchmark], benchmark, args.path, max_val)
+        line_plot(vis_data[benchmark], benchmark, path, max_val)
 
 
-def build_plots(args, vis_data):
+def build_plots(path, chart_type, vis_data):
     max_val = max(max(vv) for v in vis_data.values() for vv in v.values())
-    if args.type == 'line':
-        build_line_plots(args, vis_data, max_val)
-    elif args.type == 'violin':
-        build_violin_plots(args, vis_data, max_val)
-    elif args.type == 'both':
-        build_violin_plots(args, vis_data, max_val)
-        build_line_plots(args, vis_data, max_val)
+    if chart_type == 'line':
+        build_line_plots(path, vis_data, max_val)
+    elif chart_type == 'violin':
+        build_violin_plots(path, vis_data, max_val)
+    elif chart_type == 'both':
+        build_violin_plots(path, vis_data, max_val)
+        build_line_plots(path, vis_data, max_val)
     else:
-        print("'%s' is not a valid plot type. Use 'python -m viewer --help' to see valid options." % args.type)
+        print("'%s' is not a valid plot type. Use 'python -m viewer --help' to see valid options." % chart_type)
 
 
 def get_stats(full_stats, vis_data):
@@ -150,7 +149,6 @@ def get_multiple_measurements(result_dirs, dir_path):
         full_data = get_full_data(rd, files)
         vis_data = get_visualization_data(full_data)
         get_stats(full_stats, vis_data)
-    pprint(full_stats)
     for bm in full_stats.keys():
         overhead_plot(full_stats[bm], bm, dir_path)
 
@@ -158,12 +156,14 @@ def get_multiple_measurements(result_dirs, dir_path):
 def main():
     args = parse_args()
     if args.path:
-        files = get_files(args.path)
-        full_data = get_full_data(args.path, files)  # indexed by monitoring level
-        vis_data = get_visualization_data(full_data)  # indexed by micro name
-        build_plots(args, vis_data)
-    elif args.results:
-        get_multiple_measurements(args.results, args.results[0])
+        if len(args.path) == 1:
+            path = args.path[0]
+            files = get_files(path)
+            full_data = get_full_data(path, files)  # indexed by monitoring level
+            vis_data = get_visualization_data(full_data)  # indexed by micro name
+            build_plots(path, args.type, vis_data)
+        else:
+            get_multiple_measurements(args.path, args.path[0])
     else:
         print('No results directory was specified.')
 
