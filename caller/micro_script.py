@@ -17,8 +17,7 @@ APP_PATH = config['app']['protocol'] + '://' +\
 
 
 def call_endpoint(endpoint):
-    r = requests.get(APP_PATH + endpoint)
-    r.json()
+    requests.get(APP_PATH + endpoint)
 
 
 if __name__ == "__main__":

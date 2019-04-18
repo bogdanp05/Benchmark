@@ -12,7 +12,7 @@ class ConfigMicro(object):
         self.values = 5
         self.processes = 20
         self.bm_cooldown = 10
-        self.speed = "normal"
+        self.speed = "fast"
 
         # app
         self.url = "127.0.0.1"

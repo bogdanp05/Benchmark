@@ -10,11 +10,7 @@ run_macro:
 
 # View the last results
 view:
-	python -m viewer $(last_results)
-
-# Remove all databases created during the benchmarks
-clear:
-	rm *.db
+	python -m viewer --path $(last_results)
 
 # Remove all plots
 free_space:
