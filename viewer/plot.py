@@ -81,16 +81,17 @@ def line_plot(benchmark_data, benchmark_name, dir_path, max_val):
 def overhead_plot(stats_data, benchmark_name, dir_path):
     data = []
     base = -1
+    durations = sorted(list(stat['mean'] * 1000 for stat in stats_data[base]))
     for k in sorted(stats_data.keys()):
         if k == base:
             continue
-        durations = list(stat['mean']*1000 for stat in stats_data[base])
         overheads = []
         deviations = []
         for idx, base_stats in enumerate(stats_data[base]):
             base_mean = base_stats['mean']
             ov = stats_data[k][idx]['mean'] - base_mean
             overheads.append(ov*1000)
+            overheads.sort()
             deviations.append((stats_data[k][idx]['std'] - stats_data[base][idx]['std'])*1000)
         trace_ov = {
                         "type": 'scatter',
