@@ -1,4 +1,5 @@
 import os
+from pprint import pprint
 
 import plotly.graph_objs as go
 from plotly.offline import plot
@@ -81,21 +82,21 @@ def line_plot(benchmark_data, benchmark_name, dir_path, max_val):
 def overhead_plot(stats_data, benchmark_name, dir_path):
     data = []
     base = -1
-    durations = sorted(list(stat['mean'] * 1000 for stat in stats_data[base]))
     for k in sorted(stats_data.keys()):
         if k == base:
             continue
         overheads = []
         deviations = []
-        for idx, base_stats in enumerate(stats_data[base]):
-            base_mean = base_stats['mean']
-            ov = stats_data[k][idx]['mean'] - base_mean
-            overheads.append(ov*1000)
-            overheads.sort()
-            deviations.append((stats_data[k][idx]['std'] - stats_data[base][idx]['std'])*1000)
+        base_stats = stats_data[base]
+        monitored_stats = stats_data[k]
+        base_stats, monitored_stats = (list(s) for s in zip(*sorted(zip(base_stats, monitored_stats),
+                                                                    key=lambda pair: pair[0]['mean'])))
+        for idx, dur in enumerate(base_stats):
+            overheads.append((monitored_stats[idx]['mean'] - base_stats[idx]['mean'])*1000)
+            deviations.append(monitored_stats[idx]['std'] * 1000)
         trace_ov = {
                         "type": 'scatter',
-                        "x": durations,
+                        "x": [bs['mean']*1000 for bs in base_stats],
                         "y": overheads,
                         "error_y": {
                                     "type": 'data',
