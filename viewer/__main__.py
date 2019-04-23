@@ -5,6 +5,7 @@ from collections import defaultdict
 from math import sqrt
 
 from viewer.plot import violin_plot, line_plot, overhead_plot
+from viewer.statistics import linear_regression
 
 """
 Structure of a K.json file, with K={-1,0,1,2,3}:
@@ -150,7 +151,9 @@ def get_multiple_measurements(result_dirs, dir_path):
         vis_data = get_visualization_data(full_data)
         get_stats(full_stats, vis_data)
     for bm in full_stats.keys():
+        linear_regression(full_stats[bm], bm)
         overhead_plot(full_stats[bm], bm, dir_path)
+        # break
 
 
 def main():
