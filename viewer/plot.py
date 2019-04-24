@@ -1,5 +1,4 @@
 import os
-from pprint import pprint
 
 import plotly.graph_objs as go
 from plotly.offline import plot

@@ -153,7 +153,6 @@ def get_multiple_measurements(result_dirs, dir_path):
     for bm in full_stats.keys():
         linear_regression(full_stats[bm], bm)
         overhead_plot(full_stats[bm], bm, dir_path)
-        # break
 
 
 def main():

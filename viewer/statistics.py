@@ -9,7 +9,10 @@ def linear_regression(stats, bm):
     for k in stats.keys():
         if k == BASE:
             continue
-        y = [s['mean'] for s in stats[k]]
+        y = []
+        for idx, dur in enumerate(stats[k]):
+            y.append(dur['mean'] - stats[BASE][idx]['mean'])
+        # y = [s['mean'] for s in stats[k]]
         model = LinearRegression().fit(x, y)
         print("Monitoring level %s: b0: %f, b1: %f, score: %f"
               % (k, model.intercept_, model.coef_[0], model.score(x, y)))
