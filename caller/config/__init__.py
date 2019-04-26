@@ -12,7 +12,7 @@ class ConfigMicro(object):
         self.values = 5
         self.processes = 20
         self.bm_cooldown = 10
-        self.speed = "fast"
+        self.speed = [100]
 
         # app
         self.url = "127.0.0.1"
@@ -35,7 +35,7 @@ class ConfigMicro(object):
         self.values = parse_literal(config_parser, 'run', 'values', self.values)
         self.processes = parse_literal(config_parser, 'run', 'processes', self.processes)
         self.bm_cooldown = parse_literal(config_parser, 'run', 'bm_cooldown', self.bm_cooldown)
-        self.speed = parse_string(config_parser, 'run', 'speed', self.speed)
+        self.speed = parse_list(config_parser, 'run', 'speed', self.speed)
 
         # parse app
         self.url = parse_string(config_parser, 'app', 'url', self.url)
