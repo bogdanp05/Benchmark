@@ -24,7 +24,9 @@ pip install -r requirements.txt
 
 ### 2. Run benchmarks
 
-**Make sure to define the hyper parameters in the `config.ini` file.**
+**Make sure to configure the benchmark parameters. Use the `config_micro.ini` 
+and `config_macro.ini` files for the micro and macro benchmarks
+respectively.**
 
 
 #### 2.1. Micro benchmarks
@@ -47,6 +49,17 @@ Flask db init
 Flask db migrate
 Flask db upgrade
 ```
+
+To generate a load run from the root:
+
+```
+python -m caller --load true
+``` 
+This will create an SQLite db of ~100MB, named as in the config file. The db
+consists of 100 users, each with 10 articles of 100KB each, 30 comments per
+user, 3 tags per article, each user follows 3 other users and favorites 3
+articles.
+
 
 To run the macro benchmarks, go in the root of the project and run:
 ```
