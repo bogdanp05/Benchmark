@@ -12,7 +12,8 @@ APP_PATH = config_macro.protocol + '://' +\
 
 def set_environment(flask_app):
     os.environ["FLASK_APP"] = LOCATION + '../' + flask_app
-    os.environ["MACRO_DB"] = config_macro.db
+    os.environ["APP_DB"] = config_macro.app_db
+    os.environ["FMD_DB"] = config_macro.fmd_db
 
 
 def run():
