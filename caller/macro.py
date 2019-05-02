@@ -19,9 +19,6 @@ def set_environment(flask_app):
 def run():
     set_environment('macro/autoapp.py')
     utils.create_results_dir(RESULTS_DIR, MACRO_FILE)
-    server_pid = utils.start_app(-1, config_macro.webserver, config_macro.port, config_macro.url, 'macro.autoapp:app')
+    server_pid = utils.start_app(1, config_macro.webserver, config_macro.port,
+                                 config_macro.url, 'macro.autoapp:app', log=True)
     print(server_pid)
-
-
-
-

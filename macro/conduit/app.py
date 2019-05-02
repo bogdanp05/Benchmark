@@ -1,11 +1,18 @@
 # -*- coding: utf-8 -*-
-"""The app module, containing the app factory function."""
+"""The app module, containing the app factory function.
+
+Do NOT optimize imports using PyCharm's option!!! It will break everything because there's a circular dependency
+somewhere and you'll be spending a couple of hours trying to debug it.
+"""
+
 from flask import Flask
 from macro.conduit.extensions import bcrypt, cache, db, migrate, jwt, cors
 
-from macro.conduit import commands, user, profile, articles
+from macro.conduit import commands, user, profile, articles, FMD_LEVEL, FMD_DB
 from macro.conduit.settings import ProdConfig
 from macro.conduit.exceptions import InvalidUsage
+
+# from macro.conduit import FMD_DB, FMD_LEVEL
 
 
 def create_app(config_object=ProdConfig):
@@ -15,6 +22,14 @@ def create_app(config_object=ProdConfig):
     :param config_object: The configuration object to use.
     """
     app = Flask(__name__.split('.')[1])
+    if FMD_LEVEL > -1:
+        print("FMD level: %d" % FMD_LEVEL)
+        import flask_monitoringdashboard as dashboard
+        if FMD_DB:
+            dashboard.config.database_name = FMD_DB
+        dashboard.config.monitor_level = FMD_LEVEL
+        dashboard.bind(app)
+
     app.url_map.strict_slashes = False
     app.config.from_object(config_object)
     register_extensions(app)
