@@ -56,6 +56,11 @@ class ConfigMacro(object):
         """
             Sets the default values for the macro benchmark
         """
+        # run
+        self.values = 5
+        self.processes = 20
+        self.bm_cooldown = 10
+
         # app
         self.app_db = 'sqlite:///macro.db'
         self.url = "127.0.0.1"
@@ -70,6 +75,11 @@ class ConfigMacro(object):
     def init_from(self, file=None):
         config_parser = configparser.RawConfigParser()
         config_parser.read(file)
+
+        # parse run
+        self.values = parse_literal(config_parser, 'run', 'values', self.values)
+        self.processes = parse_literal(config_parser, 'run', 'processes', self.processes)
+        self.bm_cooldown = parse_literal(config_parser, 'run', 'bm_cooldown', self.bm_cooldown)
 
         # parse app
         self.app_db = parse_string(config_parser, 'app', 'app_db', self.app_db)
