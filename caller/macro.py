@@ -1,3 +1,4 @@
+import configparser
 import datetime
 import os
 import time
@@ -33,10 +34,10 @@ def run_perf_script(level):
     server_pid = utils.start_app(level, config_macro.webserver, config_macro.port,
                                  config_macro.url, 'macro.autoapp:app', log=False)
     time.sleep(config_macro.bm_cooldown)
-    # benchmark_file = configparser.ConfigParser()
-    # benchmark_file['bench'] = {'name': b[0], 'desc': b[1]}
-    # with open('bm_info.ini', 'w') as configfile:
-    #     benchmark_file.write(configfile)
+    benchmark_file = configparser.ConfigParser()
+    benchmark_file['bench'] = {'users': 1}
+    with open('bm_info.ini', 'w') as configfile:
+        benchmark_file.write(configfile)
 
     with temporary_file() as tmp:
         cmd.extend(('--output', tmp))
