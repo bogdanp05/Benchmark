@@ -25,6 +25,8 @@ def run_benchmarks(args):
     elif args.type == 'both':
         micro.run()
         macro.run()
+    elif args.type == 'test':
+        macro.test()
     else:
         print("'%s' is not a valid benchmark type. Use 'python -m caller --help' to see valid options." % args.type)
 

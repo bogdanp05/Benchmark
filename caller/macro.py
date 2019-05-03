@@ -54,6 +54,12 @@ def get_file_name(results_dir, monitor_level):
     return filename
 
 
+def test():
+    server_pid = utils.start_app(-1, config_macro.webserver, config_macro.port,
+                                 config_macro.url, 'macro.autoapp:app', log=True)
+    print(server_pid)
+
+
 def run():
     start_time = datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")
     results_dir = LOCATION + '../results/macro/' + start_time
