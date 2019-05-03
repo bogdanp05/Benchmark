@@ -30,6 +30,8 @@ def run_perf_script(level):
     benchmarks = []
 
     utils.drop_tables(config_macro.fmd_db)
+    server_pid = utils.start_app(level, config_macro.webserver, config_macro.port,
+                                 config_macro.url, 'macro.autoapp:app', log=False)
     time.sleep(config_macro.bm_cooldown)
     # benchmark_file = configparser.ConfigParser()
     # benchmark_file['bench'] = {'name': b[0], 'desc': b[1]}
@@ -41,8 +43,8 @@ def run_perf_script(level):
         run_command(cmd)
         benchmarks.append(perf.Benchmark.load(tmp))
 
-    # utils.stop_app(server_pid)
-    # time.sleep(config_micro.bm_cooldown)
+    utils.stop_app(server_pid)
+    time.sleep(config_macro.bm_cooldown)
 
     return perf.BenchmarkSuite(benchmarks)
 
@@ -57,9 +59,6 @@ def run():
     results_dir = LOCATION + '../results/macro/' + start_time
     set_environment('macro/autoapp.py')
     utils.create_results_dir(RESULTS_DIR, MACRO_FILE)
-    server_pid = utils.start_app(1, config_macro.webserver, config_macro.port,
-                                 config_macro.url, 'macro.autoapp:app', log=False)
-    print(server_pid)
 
     for level in config_macro.levels:
         print("FMD level %d" % level)
