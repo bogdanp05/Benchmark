@@ -60,6 +60,7 @@ class ConfigMacro(object):
         self.values = 5
         self.processes = 20
         self.bm_cooldown = 10
+        self.users = [1, 2, 5, 10]
 
         # app
         self.app_db = 'sqlite:///macro.db'
@@ -80,6 +81,7 @@ class ConfigMacro(object):
         self.values = parse_literal(config_parser, 'run', 'values', self.values)
         self.processes = parse_literal(config_parser, 'run', 'processes', self.processes)
         self.bm_cooldown = parse_literal(config_parser, 'run', 'bm_cooldown', self.bm_cooldown)
+        self.users = parse_list(config_parser, 'run', 'users', self.users)
 
         # parse app
         self.app_db = parse_string(config_parser, 'app', 'app_db', self.app_db)

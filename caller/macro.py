@@ -22,7 +22,7 @@ def set_environment(flask_app):
     os.environ["FMD_DB"] = config_macro.fmd_db
 
 
-def run_perf_script(level):
+def run_perf_script(level, user):
     bm_path = LOCATION + 'macro_script.py'
     cmd = list(["python"])
     cmd.append('-u')
@@ -35,7 +35,7 @@ def run_perf_script(level):
                                  config_macro.url, 'macro.autoapp:app', log=False)
     time.sleep(config_macro.bm_cooldown)
     benchmark_file = configparser.ConfigParser()
-    benchmark_file['bench'] = {'users': 1}
+    benchmark_file['bench'] = {'users': user}
     with open('bm_info.ini', 'w') as configfile:
         benchmark_file.write(configfile)
 
@@ -62,12 +62,13 @@ def test():
 
 
 def run():
-    start_time = datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")
-    results_dir = LOCATION + '../results/macro/' + start_time
-    set_environment('macro/autoapp.py')
-    utils.create_results_dir(RESULTS_DIR, MACRO_FILE)
-
-    for level in config_macro.levels:
-        print("FMD level %d" % level)
-        suite = run_perf_script(level)
-        suite.dump(get_file_name(results_dir, level))
+    for user in config_macro.users:
+        start_time = datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")
+        results_dir = LOCATION + '../results/macro/' + start_time
+        set_environment('macro/autoapp.py')
+        utils.create_results_dir(RESULTS_DIR, MACRO_FILE)
+        print("Concurrent users: %d" % user)
+        for level in config_macro.levels:
+            print("FMD level %d" % level)
+            suite = run_perf_script(level, user)
+            suite.dump(get_file_name(results_dir, level))

@@ -37,7 +37,7 @@ def start_app(fmd_level, webserver, port, url, app=None, log=False):
         if not app:
             print("No app file given")
             return
-        command.extend(["gunicorn", "-w", "1", "-b", url + ':' + port, app])
+        command.extend(["gunicorn", "-w", "4", "-b", url + ':' + port, app])
         if log:
             command.extend(["--log-level", "debug"])
 
