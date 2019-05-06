@@ -9,8 +9,6 @@ from performance.utils import temporary_file
 
 from caller import utils, config_macro, LOCATION, MACRO_FILE
 
-START_TIME = datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")
-RESULTS_DIR = LOCATION + '../results/macro/' + START_TIME
 APP_PATH = config_macro.protocol + '://' +\
            config_macro.url + ':' +\
            config_macro.port + '/api'
@@ -66,7 +64,7 @@ def run():
         start_time = datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")
         results_dir = LOCATION + '../results/macro/' + start_time
         set_environment('macro/autoapp.py')
-        utils.create_results_dir(RESULTS_DIR, MACRO_FILE)
+        utils.create_results_dir(results_dir, MACRO_FILE)
         print("Concurrent users: %d" % user)
         for level in config_macro.levels:
             print("FMD level %d" % level)

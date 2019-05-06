@@ -1,3 +1,4 @@
+import datetime
 import json
 import random
 
@@ -34,10 +35,11 @@ class UserBehavior(TaskSequence):
         self.client.post("/api/articles/%s/favorite" % self.current_article, headers=self.headers)
 
     def write_article(self):
-        uniques = random.sample(range(0, 1000), 3)
-        payload = {"article": {"title": "title%d" % uniques[0],
-                               "description": "description%d" % uniques[1],
-                               "body": "%dA very short article." % uniques[2],
+        unique = random.sample(range(0, 1000), 1)
+        payload = {"article": {"title": "title%d%s" % (random.randint(1, 1000),
+                                                       datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")),
+                               "description": "description",
+                               "body": "%dA very short article.",
                                "tagList": ["tag1", "tag2"]}}
         response = self.client.post("/api/articles", data=json.dumps(payload), headers=self.headers)
         slug = response.json()['article']['slug']
