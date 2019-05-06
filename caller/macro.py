@@ -21,10 +21,7 @@ def set_environment(flask_app):
 
 
 def run_perf_script(level, user):
-    bm_path = LOCATION + 'macro_script.py'
-    cmd = list(["python"])
-    cmd.append('-u')
-    cmd.append(bm_path)
+    cmd = utils.build_command('macro_script.py')
 
     benchmarks = []
 
@@ -48,11 +45,6 @@ def run_perf_script(level, user):
     return perf.BenchmarkSuite(benchmarks)
 
 
-def get_file_name(results_dir, monitor_level):
-    filename = results_dir + '/' + str(monitor_level) + '.json'
-    return filename
-
-
 def test():
     server_pid = utils.start_app(-1, config_macro.webserver, config_macro.port,
                                  config_macro.url, 'macro.autoapp:app', log=True)
@@ -69,4 +61,4 @@ def run():
         for level in config_macro.levels:
             print("FMD level %d" % level)
             suite = run_perf_script(level, user)
-            suite.dump(get_file_name(results_dir, level))
+            suite.dump(utils.get_file_name(results_dir, level))

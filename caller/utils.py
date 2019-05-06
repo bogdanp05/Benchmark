@@ -48,3 +48,16 @@ def start_app(fmd_level, webserver, port, url, app=None, log=False):
 
 def stop_app(server_pid):
     os.kill(server_pid, signal.SIGTERM)
+
+
+def get_file_name(results_dir, monitor_level):
+    filename = results_dir + '/' + str(monitor_level) + '.json'
+    return filename
+
+
+def build_command(script):
+    bm_path = LOCATION + script
+    cmd = list(["python"])
+    cmd.append('-u')
+    cmd.append(bm_path)
+    return cmd

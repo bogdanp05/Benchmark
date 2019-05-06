@@ -17,10 +17,7 @@ def set_environment(flask_app, fmd_db, bm_speed):
 
 
 def run_perf_script(level):
-    bm_path = LOCATION + 'micro_script.py'
-    cmd = list(["python"])
-    cmd.append('-u')
-    cmd.append(bm_path)
+    cmd = utils.build_command('micro_script.py')
 
     benchmarks = []
     for b in config_micro.benchmarks:
@@ -44,11 +41,6 @@ def run_perf_script(level):
     return perf.BenchmarkSuite(benchmarks)
 
 
-def get_file_name(results_dir, monitor_level):
-    filename = results_dir + '/' + str(monitor_level) + '.json'
-    return filename
-
-
 def run():
     for speed in config_micro.speed:
         start_time = datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")
@@ -58,4 +50,4 @@ def run():
         for level in config_micro.levels:
             print("FMD level %d" % level)
             suite = run_perf_script(level)
-            suite.dump(get_file_name(results_dir, level))
+            suite.dump(utils.get_file_name(results_dir, level))
