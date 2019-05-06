@@ -7,7 +7,7 @@ import requests
 from caller import utils, config_macro
 from caller.macro import set_environment, APP_PATH
 
-USER_NUMBER = 100
+USER_NUMBER = 20
 USER_PREFIX = 'user'
 PASSWORD = 'user'
 ARTICLE_USER = 10  # articles per user
@@ -129,7 +129,7 @@ def follow_favorite(users):
 
 def create_load():
     set_environment('macro/autoapp.py')
-    utils.drop_tables(config_macro.db)
+    utils.drop_tables(config_macro.app_db)
     print("Deleted tables")
     server_pid = utils.start_app(-1, config_macro.webserver, config_macro.port,
                                  config_macro.url, 'macro.autoapp:app', log=False)

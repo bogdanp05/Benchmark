@@ -36,8 +36,8 @@ class ProdConfig(Config):
 
     ENV = 'prod'
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL',
-                                             'postgresql://localhost/example')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('APP_DB', 'sqlite:///macro.db')
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(10 ** 6)
 
 
 class DevConfig(Config):
