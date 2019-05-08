@@ -55,8 +55,8 @@ To generate a load run from the root:
 ```
 python -m caller --load true
 ``` 
-This will create an SQLite db of ~100MB, named as in the config file. The db
-consists of 100 users, each with 10 articles of 100KB each, 30 comments per
+This will create an SQLite db of ~63MB, named as in the config file. The db
+consists of 500 users, each with 10 articles of 10KB each, 30 comments per
 user, 3 tags per article, each user follows 3 other users and favorites 3
 articles.
 

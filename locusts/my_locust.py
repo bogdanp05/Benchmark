@@ -35,7 +35,6 @@ class UserBehavior(TaskSequence):
         self.client.post("/api/articles/%s/favorite" % self.current_article, headers=self.headers)
 
     def write_article(self):
-        unique = random.sample(range(0, 1000), 1)
         payload = {"article": {"title": "title%d%s" % (random.randint(1, 1000),
                                                        datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")),
                                "description": "description",
