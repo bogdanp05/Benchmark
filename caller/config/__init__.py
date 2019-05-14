@@ -19,6 +19,7 @@ class ConfigMicro(object):
         self.port = "5000"
         self.protocol = "http"
         self.webserver = "gunicorn"
+        self.output = "file"
 
         # fmd
         self.levels = [-1, 0, 1, 2, 3]
@@ -42,6 +43,7 @@ class ConfigMicro(object):
         self.port = parse_string(config_parser, 'app', 'port', self.port)
         self.protocol = parse_string(config_parser, 'app', 'protocol', self.protocol)
         self.webserver = parse_string(config_parser, 'app', 'webserver', self.webserver)
+        self.output = parse_string(config_parser, 'app', 'output', self.output)
 
         # parse fmd
         self.levels = parse_list(config_parser, 'fmd', 'levels', self.levels)

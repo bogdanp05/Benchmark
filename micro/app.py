@@ -1,4 +1,3 @@
-import datetime
 import logging
 import timeit
 from functools import wraps
@@ -47,7 +46,7 @@ def duration(func):
         func()
         t_1 = timeit.default_timer()
         response_time = t_1 - t_0
-        print("%s: %s took %f seconds" % (datetime.datetime.now(), func.__name__, response_time))
+        # print("%s: %s took %f seconds" % (datetime.datetime.now(), func.__name__, response_time))
         return jsonify({'response_time': response_time})
     return decorated_function
 

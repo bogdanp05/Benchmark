@@ -23,7 +23,7 @@ def run_perf_script(level):
     for b in config_micro.benchmarks:
         utils.drop_tables(config_micro.db_url)
         server_pid = utils.start_app(level, config_micro.webserver, config_micro.port,
-                                     config_micro.url, 'micro.app:app')
+                                     config_micro.url, 'micro.app:app', output=config_micro.output)
         time.sleep(config_micro.bm_cooldown)
         benchmark_file = configparser.ConfigParser()
         benchmark_file['bench'] = {'name': b[0], 'desc': b[1]}
