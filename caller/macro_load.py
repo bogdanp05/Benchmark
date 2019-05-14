@@ -7,11 +7,11 @@ import requests
 from caller import utils, config_macro
 from caller.macro import set_environment, APP_PATH
 
-USER_NUMBER = 20
+USER_NUMBER = 500
 USER_PREFIX = 'user'
 PASSWORD = 'user'
 ARTICLE_USER = 10  # articles per user
-ARTICLE_SIZE = 100  # in KB
+ARTICLE_SIZE = 10  # in KB
 TITLE = 'Title'
 DESCRIPTION = 'A short description of the article'
 TAG = 'tag'

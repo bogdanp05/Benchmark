@@ -58,7 +58,7 @@ class ConfigMacro(object):
         """
         # run
         self.values = 5
-        self.processes = 20
+        self.processes = 5
         self.bm_cooldown = 10
         self.users = [1, 2, 5, 10]
 

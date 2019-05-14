@@ -3,6 +3,7 @@ import os
 import plotly.graph_objs as go
 from plotly.offline import plot
 
+SECONDS = False
 FONT = dict(size=18)
 COLORS = ['rgb(31, 119, 180)',  # muted blue
           'rgb(255, 127, 14)',  # safety orange
@@ -81,6 +82,7 @@ def line_plot(benchmark_data, benchmark_name, dir_path, max_val):
 def overhead_plot(stats_data, benchmark_name, dir_path):
     data = []
     base = -1
+    factor = 1 if SECONDS else 1000
     for k in sorted(stats_data.keys()):
         if k == base:
             continue
@@ -91,11 +93,11 @@ def overhead_plot(stats_data, benchmark_name, dir_path):
         base_stats, monitored_stats = (list(s) for s in zip(*sorted(zip(base_stats, monitored_stats),
                                                                     key=lambda pair: pair[0]['mean'])))
         for idx, dur in enumerate(base_stats):
-            overheads.append((monitored_stats[idx]['mean'] - base_stats[idx]['mean'])*1000)
-            deviations.append(monitored_stats[idx]['std'] * 1000)
+            overheads.append((monitored_stats[idx]['mean'] - base_stats[idx]['mean'])*factor)
+            deviations.append(monitored_stats[idx]['std'] * factor)
         trace_ov = {
                         "type": 'scatter',
-                        "x": [bs['mean']*1000 for bs in base_stats],
+                        "x": [bs['mean'] * factor for bs in base_stats],
                         "y": overheads,
                         "error_y": {
                                     "type": 'data',
@@ -109,13 +111,14 @@ def overhead_plot(stats_data, benchmark_name, dir_path):
 
         data.append(trace_ov)
 
+    unit = 'seconds' if SECONDS else 'ms'
     layout = go.Layout(
         title='%s benchmark' % benchmark_name,
         xaxis=dict(
-            title="Base response time (ms)"
+            title="Base response time (%s)" % unit
         ),
         yaxis=dict(
-            title="Overhead (ms)",
+            title="Overhead (%s)" % unit
         ),
         font=FONT
     )

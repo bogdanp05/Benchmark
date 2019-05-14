@@ -17,8 +17,8 @@ APP_PATH = config['app']['protocol'] + '://' +\
 
 
 def invoke_locust(users):
-    subprocess.run(['locust', '-f', LOCATION + '../locusts/my_locust.py',
-                    '--host', APP_PATH, '--no-web', '-c', users, '-r', '1'])
+    subprocess.run(['locust', '-f', LOCATION + '/locust.py',
+                    '--host', APP_PATH, '--no-web', '-c', users, '-r', users])
 
 
 if __name__ == "__main__":
