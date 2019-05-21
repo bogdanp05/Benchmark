@@ -4,7 +4,7 @@ from functools import wraps
 
 from flask import Flask, jsonify
 
-from micro import probe, FMD_LEVEL, FMD_DB
+from micro import FMD_LEVEL, FMD_DB
 from micro.loads import cpu, memory, disk, recursive
 
 app = Flask(__name__)
@@ -25,18 +25,6 @@ log.setLevel(logging.ERROR)
 @app.route('/')
 def root():
     return 'Server is running'
-
-
-@app.route('/start_probe/<float:sampling_rate>')
-def start_probe(sampling_rate):
-    probe.start_probe(sampling_rate)
-    return 'OK'
-
-
-@app.route('/stop_probe/')
-def stop_probe():
-    probe.stop_probe()
-    return 'OK'
 
 
 def duration(func):
