@@ -10,8 +10,6 @@ elif BM_SPEED == "500":
     picker = 3
 elif BM_SPEED == "1000":
     picker = 4
-elif BM_SPEED == "10":
-    picker = 0
 else:
     picker = 1
 
@@ -26,8 +24,7 @@ POWERSET = [16, 17, 18, 19, 20][picker]
 PATH_LIB_NUM_FILES = [100, 200, 400, 600, 1][picker]
 PATH_LIB_LOOPS = [3, 4, 6, 8, 1][picker]
 
-# SQL_COMBINED = [3, 5, 10, 26, 50, 1][picker]
-SQL_COMBINED = [1, 5, 10, 26, 50, 1][picker]
+SQL_COMBINED = [3, 5, 10, 26, 50][picker]
 SQL_WRITES = [2, 3, 7, 17, 33][picker]
 SQL_READS = [3, 5, 11, 28, 54][picker]
 FILE_WRITES = [170, 350, 700, 1500, 3000][picker]
