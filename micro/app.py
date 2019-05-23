@@ -1,11 +1,10 @@
-import datetime
 import logging
 import timeit
 from functools import wraps
 
 from flask import Flask, jsonify
 
-from micro import probe, FMD_LEVEL, FMD_DB
+from micro import FMD_LEVEL, FMD_DB
 from micro.loads import cpu, memory, disk, recursive
 
 app = Flask(__name__)
@@ -28,18 +27,6 @@ def root():
     return 'Server is running'
 
 
-@app.route('/start_probe/<float:sampling_rate>')
-def start_probe(sampling_rate):
-    probe.start_probe(sampling_rate)
-    return 'OK'
-
-
-@app.route('/stop_probe/')
-def stop_probe():
-    probe.stop_probe()
-    return 'OK'
-
-
 def duration(func):
     @wraps(func)
     def decorated_function():
@@ -47,7 +34,7 @@ def duration(func):
         func()
         t_1 = timeit.default_timer()
         response_time = t_1 - t_0
-        print("%s: %s took %f seconds" % (datetime.datetime.now(), func.__name__, response_time))
+        # print("%s: %s took %f seconds" % (datetime.datetime.now(), func.__name__, response_time))
         return jsonify({'response_time': response_time})
     return decorated_function
 

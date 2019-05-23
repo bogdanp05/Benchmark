@@ -3,6 +3,7 @@ import os
 import plotly.graph_objs as go
 from plotly.offline import plot
 
+BASE = -1
 SECONDS = False
 FONT = dict(size=18)
 COLORS = ['rgb(31, 119, 180)',  # muted blue
@@ -79,25 +80,54 @@ def line_plot(benchmark_data, benchmark_name, dir_path, max_val):
     plot(fig, filename=os.path.join(dir_path, benchmark_name + '_line.html'))
 
 
-def overhead_plot(stats_data, benchmark_name, dir_path):
+def get_comparison_trace(comparison_data, k, x, factor):
+    if not comparison_data:
+        return None
+    overheads = []
+    deviations = []
+    base_stats = comparison_data[BASE]
+    monitored_stats = comparison_data[k]
+    base_stats, monitored_stats = (list(s) for s in zip(*sorted(zip(base_stats, monitored_stats),
+                                                                key=lambda pair: pair[0]['mean'])))
+    for idx, dur in enumerate(base_stats):
+        overheads.append((monitored_stats[idx]['mean'] - base_stats[idx]['mean']) * factor)
+        deviations.append(monitored_stats[idx]['std'] * factor)
+    comparison_trace = {
+        "type": 'scatter',
+        "x": x,
+        "y": overheads,
+        "error_y": {
+            "type": 'data',
+            "array": deviations,
+            "visible": True
+        },
+        "mode": 'lines+markers',
+        "name": str(k) + '(old)',
+        "line": {"color": COLORS[k + 1 + 5]}
+    }
+    return comparison_trace
+
+
+def overhead_plot(stats_data, benchmark_name, dir_path, comparison_data=None):
     data = []
-    base = -1
     factor = 1 if SECONDS else 1000
+    addition = '(new)' if comparison_data else ''
     for k in sorted(stats_data.keys()):
-        if k == base:
+        if k == BASE:
             continue
         overheads = []
         deviations = []
-        base_stats = stats_data[base]
+        base_stats = stats_data[BASE]
         monitored_stats = stats_data[k]
         base_stats, monitored_stats = (list(s) for s in zip(*sorted(zip(base_stats, monitored_stats),
                                                                     key=lambda pair: pair[0]['mean'])))
         for idx, dur in enumerate(base_stats):
             overheads.append((monitored_stats[idx]['mean'] - base_stats[idx]['mean'])*factor)
             deviations.append(monitored_stats[idx]['std'] * factor)
+        x = [bs['mean'] * factor for bs in base_stats]
         trace_ov = {
                         "type": 'scatter',
-                        "x": [bs['mean'] * factor for bs in base_stats],
+                        "x": x,
                         "y": overheads,
                         "error_y": {
                                     "type": 'data',
@@ -105,11 +135,14 @@ def overhead_plot(stats_data, benchmark_name, dir_path):
                                     "visible": True
                                     },
                         "mode": 'lines+markers',
-                        "name": k,
+                        "name": str(k) + addition,
                         "line": {"color": COLORS[k+1]}
                     }
 
         data.append(trace_ov)
+        comparison_trace = get_comparison_trace(comparison_data, k, x, factor)
+        if comparison_trace:
+            data.append(comparison_trace)
 
     unit = 'seconds' if SECONDS else 'ms'
     layout = go.Layout(
@@ -120,7 +153,8 @@ def overhead_plot(stats_data, benchmark_name, dir_path):
         yaxis=dict(
             title="Overhead (%s)" % unit
         ),
-        font=FONT
+        font=FONT,
+        showlegend=True
     )
 
     fig = go.Figure(data=data, layout=layout)

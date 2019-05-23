@@ -28,7 +28,7 @@ def drop_tables(db_url):
         sys.exit(1)
 
 
-def start_app(fmd_level, webserver, port, url, app=None, log=False):
+def start_app(fmd_level, webserver, port, url, app=None, log=False, output=None):
     os.environ["FMD_LEVEL"] = str(fmd_level)
     command = []
     if webserver == 'werkzeug':
@@ -41,8 +41,12 @@ def start_app(fmd_level, webserver, port, url, app=None, log=False):
         if log:
             command.extend(["--log-level", "debug"])
 
-    with open(APP_OUTPUT, 'a') as f:
-        server_process = subprocess.Popen(command, stdout=f)
+    if output and output == 'console':
+        server_process = subprocess.Popen(command)
+    else:
+        with open(APP_OUTPUT, 'a') as f:
+            server_process = subprocess.Popen(command, stdout=f)
+
     return server_process.pid
 
 

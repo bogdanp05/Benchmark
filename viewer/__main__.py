@@ -25,7 +25,7 @@ Structure of a K.json file, with K={-1,0,1,2,3}:
 def parse_args():
     parser = argparse.ArgumentParser(description='Visualize micro results')
     parser.add_argument('--path', metavar='p', nargs='+', help='paths of the results directories')
-    # parser.add_argument('--path', metavar='p', type=str, help='path of the results directory')
+    parser.add_argument('--compare_to', metavar='c', nargs='+', help='paths of the results directories to compare with')
     parser.add_argument('--type', metavar='t', type=str, default='violin',
                         help='type of visualization. options: violin, line, or both. default: violin')
     args = parser.parse_args()
@@ -143,16 +143,25 @@ def get_stats(full_stats, vis_data):
             full_stats[bm][ml].append({'mean': mean, 'std': std})
 
 
-def get_multiple_measurements(result_dirs, dir_path):
+def get_multiple_stats(dirs):
+    if dirs is None:
+        return None
     full_stats = {}
-    for rd in result_dirs:
+    for rd in dirs:
         files = get_files(rd)
         full_data = get_full_data(rd, files)
         vis_data = get_visualization_data(full_data)
         get_stats(full_stats, vis_data)
-    for bm in full_stats.keys():
-        linear_regression(full_stats[bm], bm)
-        overhead_plot(full_stats[bm], bm, dir_path)
+    return full_stats
+
+
+def get_multiple_measurements(result_dirs, dir_path, compare_dirs=None):
+    new_stats = get_multiple_stats(result_dirs)
+    old_stats = get_multiple_stats(compare_dirs)
+    for bm in new_stats.keys():
+        comparison = old_stats[bm] if old_stats is not None else None
+        linear_regression(new_stats[bm], bm, comparison)
+        overhead_plot(new_stats[bm], bm, dir_path, comparison)
 
 
 def main():
@@ -165,7 +174,8 @@ def main():
             vis_data = get_visualization_data(full_data)  # indexed by micro name
             build_plots(path, args.type, vis_data)
         else:
-            get_multiple_measurements(args.path, args.path[0])
+            compare_dirs = args.compare_to
+            get_multiple_measurements(args.path, args.path[0], compare_dirs)
     else:
         print('No results directory was specified.')
 
