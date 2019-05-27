@@ -21,7 +21,8 @@ def run_perf_script(level):
 
     benchmarks = []
     for b in config_micro.benchmarks:
-        utils.drop_tables(config_micro.db_url)
+        if config_micro.clear_db:
+            utils.drop_tables(config_micro.db_url)
         server_pid = utils.start_app(level, config_micro.webserver, config_micro.port,
                                      config_micro.url, 'micro.app:app', output=config_micro.output)
         time.sleep(config_micro.bm_cooldown)

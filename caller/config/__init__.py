@@ -1,6 +1,6 @@
 import configparser
 
-from caller.config.parser import parse_literal, parse_string, parse_list, parse_benchmarks
+from caller.config.parser import parse_literal, parse_string, parse_list, parse_benchmarks, parse_bool
 
 
 class ConfigMicro(object):
@@ -13,6 +13,7 @@ class ConfigMicro(object):
         self.processes = 20
         self.bm_cooldown = 10
         self.speed = [100]
+        self.clear_db = True
 
         # app
         self.url = "127.0.0.1"
@@ -37,6 +38,7 @@ class ConfigMicro(object):
         self.processes = parse_literal(config_parser, 'run', 'processes', self.processes)
         self.bm_cooldown = parse_literal(config_parser, 'run', 'bm_cooldown', self.bm_cooldown)
         self.speed = parse_list(config_parser, 'run', 'speed', self.speed)
+        self.clear_db = parse_bool(config_parser, 'run', 'clear_db', self.clear_db)
 
         # parse app
         self.url = parse_string(config_parser, 'app', 'url', self.url)
