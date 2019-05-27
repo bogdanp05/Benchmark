@@ -41,6 +41,13 @@ def run_perf_script(level):
     return perf.BenchmarkSuite(benchmarks)
 
 
+def test():
+    set_environment('micro/app.py', config_micro.db_url, 50)
+    server_pid = utils.start_app(1, 'gunicorn', config_micro.port,
+                                 config_micro.url, 'micro.app:app', log=True)
+    print(server_pid)
+
+
 def run():
     for speed in config_micro.speed:
         start_time = datetime.datetime.now().strftime("%y%m%d_%H:%M:%S")
