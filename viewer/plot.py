@@ -5,7 +5,7 @@ from plotly.offline import plot
 
 BASE = -1
 SECONDS = False
-FONT = dict(size=18)
+FONT = dict(size=13)
 COLORS = ['rgb(31, 119, 180)',  # muted blue
           'rgb(255, 127, 14)',  # safety orange
           'rgb(44, 160, 44)',  # cooked asparagus green
@@ -40,6 +40,42 @@ def violin_plot(benchmark_data, benchmark_name, dir_path, max_val):
         title='%s benchmark' % benchmark_name,
         xaxis=dict(
             title="FMD monitoring level"
+        ),
+        yaxis=dict(
+            title="response time (s)",
+            range=[0, max_val]
+        ),
+        font=FONT
+    )
+
+    fig = go.Figure(data=data, layout=layout)
+    plot(fig, filename=os.path.join(dir_path, benchmark_name + '_violin.html'))
+
+
+def violin_plot_custom(benchmark_data, benchmark_name, dir_path, max_val):
+    data = []
+    keys = ['0', '1k', '5k', '10k', '50k', '100k']
+    for idx, k in enumerate(keys):
+        trace = {
+            "type": 'violin',
+            "x": [idx] * len(benchmark_data[k]),
+            "y": benchmark_data[k],
+            "name": k,
+            "box": {
+                "visible": True
+            },
+            "meanline": {
+                "visible": True
+            }
+        }
+        data.append(trace)
+
+    layout = go.Layout(
+        title='%s benchmark' % benchmark_name,
+        xaxis=dict(
+            title="Endpoint previous hits",
+            ticktext=keys,
+            tickvals=[idx for idx,_ in enumerate(keys)]
         ),
         yaxis=dict(
             title="response time (s)",

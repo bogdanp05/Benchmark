@@ -4,7 +4,7 @@ import os
 from collections import defaultdict
 from math import sqrt
 
-from viewer.plot import violin_plot, line_plot, overhead_plot
+from viewer.plot import violin_plot, line_plot, overhead_plot, violin_plot_custom
 from viewer.statistics import linear_regression
 
 """
@@ -28,6 +28,7 @@ def parse_args():
     parser.add_argument('--compare_to', metavar='c', nargs='+', help='paths of the results directories to compare with')
     parser.add_argument('--type', metavar='t', type=str, default='violin',
                         help='type of visualization. options: violin, line, or both. default: violin')
+    parser.add_argument('-c', action='store_true', help='custom flag for special one-time visualizations')
     args = parser.parse_args()
     return args
 
@@ -65,7 +66,7 @@ def get_full_data(dir_path, files):
     """
     data = {}
     for file in files:
-        key = int(os.path.splitext(file)[0])
+        key = str(os.path.splitext(file)[0])
         value = read_json(os.path.join(dir_path, file))
         data[key] = value
     return data
@@ -91,14 +92,16 @@ def get_visualization_data(full_data):
                     continue
                 values.extend(r['values'])
             data[name][key].extend(values)
-
     return data
 
 
-def build_violin_plots(path, vis_data, max_val):
+def build_violin_plots(path, vis_data, max_val, custom=False):
     print("Generating violin plots of micro results from directory %s" % path)
     for benchmark in vis_data.keys():
-        violin_plot(vis_data[benchmark], benchmark, path, max_val)
+        if custom:
+            violin_plot_custom(vis_data[benchmark], benchmark, path, max_val)
+        else:
+            violin_plot(vis_data[benchmark], benchmark, path, max_val)
 
 
 def build_line_plots(path, vis_data, max_val):
@@ -107,12 +110,12 @@ def build_line_plots(path, vis_data, max_val):
         line_plot(vis_data[benchmark], benchmark, path, max_val)
 
 
-def build_plots(path, chart_type, vis_data):
+def build_plots(path, chart_type, vis_data, custom=False):
     max_val = max(max(vv) for v in vis_data.values() for vv in v.values())
     if chart_type == 'line':
         build_line_plots(path, vis_data, max_val)
     elif chart_type == 'violin':
-        build_violin_plots(path, vis_data, max_val)
+        build_violin_plots(path, vis_data, max_val, custom)
     elif chart_type == 'both':
         build_violin_plots(path, vis_data, max_val)
         build_line_plots(path, vis_data, max_val)
@@ -172,7 +175,7 @@ def main():
             files = get_files(path)
             full_data = get_full_data(path, files)  # indexed by monitoring level
             vis_data = get_visualization_data(full_data)  # indexed by micro name
-            build_plots(path, args.type, vis_data)
+            build_plots(path, args.type, vis_data, args.c)
         else:
             compare_dirs = args.compare_to
             get_multiple_measurements(args.path, args.path[0], compare_dirs)
