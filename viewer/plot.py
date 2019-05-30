@@ -3,7 +3,7 @@ import os
 import plotly.graph_objs as go
 from plotly.offline import plot
 
-BASE = -1
+BASE = '-1'
 SECONDS = False
 FONT = dict(size=13)
 COLORS = ['rgb(31, 119, 180)',  # muted blue
@@ -172,7 +172,7 @@ def overhead_plot(stats_data, benchmark_name, dir_path, comparison_data=None):
                                     },
                         "mode": 'lines+markers',
                         "name": str(k) + addition,
-                        "line": {"color": COLORS[k+1]}
+                        "line": {"color": COLORS[int(k)+1]}
                     }
 
         data.append(trace_ov)
