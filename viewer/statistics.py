@@ -1,6 +1,6 @@
 from sklearn.linear_model import LinearRegression
 
-BASE = -1
+BASE = '-1'
 
 
 def linear_regression(stats, bm, comparison_stats=None):
