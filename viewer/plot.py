@@ -139,7 +139,8 @@ def get_comparison_trace(comparison_data, k, x, factor):
         },
         "mode": 'lines+markers',
         "name": str(k) + '(old)',
-        "line": {"color": COLORS[k + 1 + 5]}
+        # "line": {"color": COLORS[int(k) + 1 + 5]}
+        "line": {"color": COLORS[2 + 1 + 5]}
     }
     return comparison_trace
 
