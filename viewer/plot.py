@@ -18,6 +18,16 @@ COLORS = ['rgb(31, 119, 180)',  # muted blue
           'rgb(23, 190, 207)'   # blue-teal]
           ]
 
+TITLE = {'pidigits': 'pidigits (CPU)',
+         'nbody': 'nbody (CPU)',
+         'fib': 'fib (memory)',
+         'list': 'list (memory)',
+         'json_loads': 'json_loads (memory)',
+         'sql_combined': 'sql_combined (disk)',
+         'sql_writes': 'sql_writes (disk)',
+         'sql_reads': 'sql_reads (disk)',
+         'macro': 'macro benchmark'}
+
 
 def violin_plot(benchmark_data, benchmark_name, dir_path, max_val):
     data = []
@@ -37,7 +47,7 @@ def violin_plot(benchmark_data, benchmark_name, dir_path, max_val):
         data.append(trace)
 
     layout = go.Layout(
-        title='%s benchmark' % benchmark_name,
+        title=TITLE.get(benchmark_name),
         xaxis=dict(
             title="FMD monitoring level"
         ),
@@ -71,7 +81,7 @@ def violin_plot_custom(benchmark_data, benchmark_name, dir_path, max_val):
         data.append(trace)
 
     layout = go.Layout(
-        title='%s benchmark' % benchmark_name,
+        title=TITLE.get(benchmark_name),
         xaxis=dict(
             title="Endpoint previous hits",
             ticktext=keys,
@@ -101,7 +111,7 @@ def line_plot(benchmark_data, benchmark_name, dir_path, max_val):
         data.append(trace)
 
     layout = go.Layout(
-        title='%s benchmark' % benchmark_name,
+        title=TITLE.get(benchmark_name),
         xaxis=dict(
             title="Measurements"
         ),
@@ -183,7 +193,7 @@ def overhead_plot(stats_data, benchmark_name, dir_path, comparison_data=None):
 
     unit = 'seconds' if SECONDS else 'ms'
     layout = go.Layout(
-        title='%s benchmark' % benchmark_name,
+        title=TITLE.get(benchmark_name),
         xaxis=dict(
             title="Base response time (%s)" % unit
         ),
