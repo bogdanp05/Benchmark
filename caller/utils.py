@@ -51,7 +51,7 @@ def start_app(fmd_level, webserver, port, url, app=None, log=False, output=None)
 
 
 def stop_app(server_pid):
-    os.kill(server_pid, signal.SIGTERM)
+    os.kill(server_pid, signal.SIGINT)
 
 
 def get_file_name(results_dir, monitor_level):
