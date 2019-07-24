@@ -15,6 +15,7 @@ if FMD_LEVEL > -1:
     if FMD_DB:
         dashboard.config.database_name = FMD_DB
     dashboard.config.monitor_level = FMD_LEVEL
+    dashboard.config.sampling_period = 5/1000.0
     dashboard.bind(app)
 
 

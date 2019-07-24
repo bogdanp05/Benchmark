@@ -4,8 +4,8 @@ import plotly.graph_objs as go
 from plotly.offline import plot
 
 BASE = '-1'
-SECONDS = False
-FONT = dict(size=13)
+SECONDS = True
+FONT = dict(size=17)
 COLORS = ['rgb(31, 119, 180)',  # muted blue
           'rgb(255, 127, 14)',  # safety orange
           'rgb(44, 160, 44)',  # cooked asparagus green
@@ -26,7 +26,7 @@ TITLE = {'pidigits': 'pidigits (CPU)',
          'sql_combined': 'sql_combined (disk)',
          'sql_writes': 'sql_writes (disk)',
          'sql_reads': 'sql_reads (disk)',
-         'macro': 'macro benchmark'}
+         'macro': 'macro: 10 users (3rd iteration)'}
 
 
 def violin_plot(benchmark_data, benchmark_name, dir_path, max_val):
@@ -53,7 +53,8 @@ def violin_plot(benchmark_data, benchmark_name, dir_path, max_val):
         ),
         yaxis=dict(
             title="response time (s)",
-            range=[0, max_val]
+            # range=[0, max_val]
+            range=[36, 92]
         ),
         font=FONT
     )
