@@ -39,7 +39,7 @@ def run_perf_script(level):
         utils.stop_app(server_pid)
         time.sleep(config_micro.bm_cooldown)
 
-    return perf.BenchmarkSuite(benchmarks)
+    return pyperf.BenchmarkSuite(benchmarks)
 
 
 def test():
