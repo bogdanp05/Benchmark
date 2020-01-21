@@ -1,7 +1,7 @@
 import configparser
 import os
 
-import perf
+import pyperf
 import subprocess
 
 LOCATION = os.path.abspath(os.path.dirname(__file__)) + '/'

@@ -3,9 +3,9 @@ import datetime
 import os
 import time
 
-import perf
-from performance.run import run_command
-from performance.utils import temporary_file
+import pyperf
+from pyperformance.run import run_command
+from pyperformance.utils import temporary_file
 
 from caller import utils, config_macro, LOCATION, MACRO_FILE
 
