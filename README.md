@@ -75,11 +75,11 @@ TODO
 The results are saved into json files, in the `/results` folder. There
 are 2 ways of viewing them:
 
-#### 3.1 Using the `perf` package 
+#### 3.1 Using the `pyperf` package 
 
 From the root run:
 ```
-python -m perf compare_to results/micro/190308_15:25:37/-1.json results/micro/190308_15:25:37/3.json --table
+python -m pyperf compare_to results/micro/190308_15:25:37/-1.json results/micro/190308_15:25:37/3.json --table
 ```
 This will show a table similar to:
 ```
