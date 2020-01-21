@@ -34,7 +34,7 @@ def run_perf_script(level):
         with temporary_file() as tmp:
             cmd.extend(('--output', tmp))
             run_command(cmd)
-            benchmarks.append(perf.Benchmark.load(tmp))
+            benchmarks.append(pyperf.Benchmark.load(tmp))
 
         utils.stop_app(server_pid)
         time.sleep(config_micro.bm_cooldown)
