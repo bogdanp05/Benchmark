@@ -1,7 +1,7 @@
 import json
 import shutil
 
-from performance.benchmarks import bm_json_loads
+from pyperformance.benchmarks import bm_json_loads
 
 from micro.loads import JSON_LOOPS, POWERSET, PATH_LIB_NUM_FILES, PATH_LIB_LOOPS, LIST_LOOPS
 from micro.loads.ported_benchmarks import bm_pathlib

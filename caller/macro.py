@@ -3,9 +3,9 @@ import datetime
 import os
 import time
 
-import perf
-from performance.run import run_command
-from performance.utils import temporary_file
+import pyperf
+from pyperformance.run import run_command
+from pyperformance.utils import temporary_file
 
 from caller import utils, config_macro, LOCATION, MACRO_FILE
 
@@ -37,12 +37,12 @@ def run_perf_script(level, user):
     with temporary_file() as tmp:
         cmd.extend(('--output', tmp))
         run_command(cmd)
-        benchmarks.append(perf.Benchmark.load(tmp))
+        benchmarks.append(pyperf.Benchmark.load(tmp))
 
     utils.stop_app(server_pid)
     time.sleep(config_macro.bm_cooldown)
 
-    return perf.BenchmarkSuite(benchmarks)
+    return pyperf.BenchmarkSuite(benchmarks)
 
 
 def test():

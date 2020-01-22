@@ -1,7 +1,7 @@
 import configparser
 import os
 
-import perf
+import pyperf
 import subprocess
 
 LOCATION = os.path.abspath(os.path.dirname(__file__)) + '/'
@@ -24,6 +24,6 @@ def invoke_locust(users):
 if __name__ == "__main__":
     values = config['run']['values']
     processes = config['run']['processes']
-    runner = perf.Runner(values=values, processes=processes)
+    runner = pyperf.Runner(values=values, processes=processes)
     runner.metadata['description'] = "Macro benchmark using the Conduit application"
     runner.bench_func("macro", invoke_locust, bm_info['bench']['users'])

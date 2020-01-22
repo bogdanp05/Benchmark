@@ -12,7 +12,7 @@ APP_OUTPUT = LOCATION + '../output.log'
 
 
 def create_results_dir(results_dir, config_file):
-    os.mkdir(results_dir)
+    os.makedirs(results_dir)
     shutil.copy2(config_file, results_dir)
 
 

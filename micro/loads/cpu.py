@@ -1,4 +1,4 @@
-from performance.benchmarks import bm_pidigits, bm_float, bm_nbody
+from pyperformance.benchmarks import bm_pidigits, bm_float, bm_nbody
 from micro.loads import PI_DIGITS, FLOAT_POINTS, NBODY_ITER
 
 
