@@ -1,5 +1,5 @@
 flask==1.0.2                          # for monitoring the web-service
-psutil==5.5.1                         # for getting system info
+psutil==5.6.6                         # for getting system info
 sqlalchemy==1.2.18                    # for database support
 requests==2.21.0                      # for sending HTTP requests
 flask_monitoringdashboard==3.0.6      # FMD
