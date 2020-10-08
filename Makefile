@@ -16,7 +16,7 @@ view:
 free_space:
 	find . -name "*.html" -type f -delete
 
-clean:
+clear:
 	find . -name "*.db" -type f -delete
 
 # Shutdown hanging server on port 5000 if necessary
