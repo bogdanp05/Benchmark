@@ -48,6 +48,7 @@ export FLASK_APP=./autoapp.py
 Flask db init
 Flask db migrate
 Flask db upgrade
+mv macro.db ../macro.db
 ```
 
 To generate a load run from the root:
