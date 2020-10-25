@@ -20,6 +20,7 @@ Go in the root of the project and install the requirements:
 ```
 pip install -r requirements.txt
 ```
+For this to work on Ubuntu, you need to make sure you have `gcc` and `python3.7-dev` installed. It won't work without it.
 
 
 ### 2. Run benchmarks
