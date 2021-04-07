@@ -27,4 +27,4 @@ Flask-Cors==3.0.7
 
 
 
-webargs==5.4.0
+webargs==5.5.3
